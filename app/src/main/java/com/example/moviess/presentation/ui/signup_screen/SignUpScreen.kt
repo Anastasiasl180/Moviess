@@ -33,7 +33,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
@@ -61,7 +60,7 @@ fun SignUpScreen(
     var isValid2 by remember { mutableStateOf(false) }
     fun isValidEmail(email: String): Boolean {
         val emailRegex = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex()
-        return email.matches(emailRegex)
+        return email.trim().matches(emailRegex)
     }
 
 
@@ -93,6 +92,7 @@ fun SignUpScreen(
                 onValueChange = {
                     email = it
                     isValid = email.isNotEmpty() && isValidEmail(it)
+
 
                 },
                 isError = !isValid,
@@ -129,7 +129,7 @@ fun SignUpScreen(
 
 
                 })
-            if (!isValid2 ) {
+            if (!isValid2) {
                 Text(text = "Please enter 8 or more characters", color = Color.Red)
             }
             TextField(value = viewModel.name.value, onValueChange = {
@@ -150,7 +150,7 @@ fun SignUpScreen(
             Button(
                 onClick = {
                     scope.launch {
-                        if (email.isNotEmpty() && password.length >= 8 && isValidEmail(email) ) {
+                        if (email.isNotEmpty() && password.length >= 8 && isValidEmail(email)) {
                             viewModel.registerInUser(email, password)
                             navigateToAvatar()
                         } else {
@@ -166,11 +166,12 @@ fun SignUpScreen(
                                     "Please enter your password",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else if (!isValidEmail(email)){
+                            } else if (!isValidEmail(email)) {
                                 Toast.makeText(
                                     context,
                                     "You missed the required characters symbols",
-                                    Toast.LENGTH_SHORT).show()
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
 
                         }

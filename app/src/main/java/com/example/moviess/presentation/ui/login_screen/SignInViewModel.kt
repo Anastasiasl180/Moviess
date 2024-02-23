@@ -1,11 +1,13 @@
 package com.example.moviess.presentation.ui.login_screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviess.common.Resource
 import com.example.moviess.di.SignInResult
 import com.example.moviess.di.UserGlobalState
 import com.example.moviess.domain.repository.AuthRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +21,8 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val repository: AuthRepository,
     val globalState: UserGlobalState,
-    val signInByGoogle:SignInByGoogle
+    val signInByGoogle: SignInByGoogle,
+    private val auth: FirebaseAuth,
 ) : ViewModel() {
 
     val _signIn = Channel<SignInState>()
@@ -38,7 +41,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun resetState(){
+    fun resetState() {
         _state.update { SignInState() }
     }
 
@@ -61,5 +64,18 @@ class SignInViewModel @Inject constructor(
                 }
             }
         }
+    fun sendResetCode(email: String) = viewModelScope.launch {
+        auth.sendPasswordResetEmail(email)
+
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    viewModelScope.launch { _signIn.send(SignInState(isSuccess = "Reset email sent")) }
+
+                } else {
+                    viewModelScope.launch { _signIn.send(SignInState(isError = task.exception?.message)) }
+                }
+
+            }
+    }
 
 }

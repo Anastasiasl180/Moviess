@@ -21,6 +21,7 @@ import com.example.moviess.presentation.ui.homeScreen.MainScaffold
 import com.example.moviess.presentation.ui.homeScreen.MovieViewModel
 import com.example.moviess.presentation.ui.login_screen.SignInViewModel
 import com.example.moviess.presentation.ui.login_screen.SignIpScreen
+import com.example.moviess.presentation.ui.login_screen.reset.ResetScreen
 import com.example.moviess.presentation.ui.searchScreen.SearchBar
 import com.example.moviess.presentation.ui.searchScreen.SearchingViewModel
 import com.example.moviess.presentation.ui.signup_screen.SignUpScreen
@@ -32,7 +33,7 @@ import com.example.moviess.presentation.ui.whishList.WishList
 fun Navigation() {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screens.HOME.route) {
+    NavHost(navController = navController, startDestination = Screens.SIGNUP.route) {
 
         composable(Screens.HOME.route) {
             val viewModel = hiltViewModel<MovieViewModel>()
@@ -103,7 +104,11 @@ fun Navigation() {
         composable(Screens.SIGNIN.route) {
             SignIpScreen(navigateToHome = {
                 navController.navigate(Screens.HOME.route)
-            })
+            }, navigateToReset = {navController.navigate(Screens.RESETINGPASSWORD.route)})
+        }
+        composable(Screens.RESETINGPASSWORD.route) {
+            val viewModel = hiltViewModel<SignInViewModel>()
+           ResetScreen(viewModel)
         }
         composable(Screens.AVATAR.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
@@ -115,7 +120,9 @@ fun Navigation() {
         composable(Screens.PROFILE.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
             Scaffold {
-                ScreenOfProfile(viewModel = viewModel)
+                ScreenOfProfile(viewModel = viewModel, navigateToSignUp = {
+                    navController.navigate(Screens.SIGNUP.route)
+                })
             }
 
         }

@@ -32,8 +32,10 @@ import com.example.moviess.presentation.ui.login_screen.SignInViewModel
 
 
 @Composable
-fun SecondPart(viewModel: SignInViewModel,
-               navigateToHome :() -> Unit) {
+fun SecondPart(
+    viewModel: SignInViewModel,
+    navigateToHome: () -> Unit
+) {
 
     val imageCropLauncher = rememberLauncherForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful && result.uriContent != null) {

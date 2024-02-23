@@ -66,7 +66,7 @@ class UserGlobalState @Inject constructor(
         }
     }
 
-    fun getUser(callback: () -> Unit) = CoroutineScope(Dispatchers.IO).launch {
+    fun getUser(callback: () -> Unit = {}) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val querySnapshot = personCollectionRef.get().await()
 
@@ -96,19 +96,26 @@ class UserGlobalState @Inject constructor(
         }
     }
 
-    fun getNewPersonMap(oldName:String,oldImage:Bitmap): Map<String, Any> {
+    fun bitMapToString(bitmap: Bitmap): String {
+        val bos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
+        val bArray = bos.toByteArray()
+        val encodedString = (bArray.contentToString())
+        return encodedString
+    }
+
+    fun getNewPersonMap(oldName: String, oldImage: String?): Map<String, Any> {
         val map = mutableMapOf<String, Any>()
         if (oldName.isNotEmpty()) {
-            map["username"] = oldName
+            map["name"] = username
         }
-       oldImage.let { bitmap ->
-            val bos = ByteArrayOutputStream()
-           oldImage.compress(Bitmap.CompressFormat.PNG, 100, bos)
-            val bArray = bos.toByteArray()
-            val encodedString = (bArray.contentToString())
-            map["bitmapImage"] = encodedString
 
+        if (oldImage != null) {
+            if (oldImage.isNotBlank()) {
+                map["image"] = oldImage
+            }
         }
+
         return map
 
     }
@@ -116,9 +123,7 @@ class UserGlobalState @Inject constructor(
     fun updatePerson(newPersonMap: Map<String, Any>) =
         CoroutineScope(Dispatchers.IO).launch {
             val peronQuerry = personCollectionRef
-                .whereEqualTo("username", username.value)
-                .whereEqualTo("image", bitmapImage.value)
-                .whereEqualTo("id", auth.uid)
+                .whereEqualTo("uid", auth.uid)
                 .get()
                 .await()
             if (peronQuerry.documents.isNotEmpty()) {
@@ -126,10 +131,31 @@ class UserGlobalState @Inject constructor(
                     try {
                         personCollectionRef.document(document.id)
                             .set(newPersonMap, SetOptions.merge()).await()
+                        getUser()
                     } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                         }
+
+                    }
+                }
+            }
+        }
+    fun deletePerson() =
+        CoroutineScope(Dispatchers.IO).launch {
+            val peronQuerry = personCollectionRef
+                .whereEqualTo("uid", auth.uid)
+                .get()
+                .await()
+            if (peronQuerry.documents.isNotEmpty()) {
+                for (document in peronQuerry) {
+                    try {
+                       personCollectionRef.document(document.id).delete().await()
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                        }
+
                     }
                 }
             }
@@ -137,13 +163,7 @@ class UserGlobalState @Inject constructor(
 
     fun saveImage(image: Uri) {
 
-        _bitmapImage.value = if (Build.VERSION.SDK_INT < 28) {
-            MediaStore.Images.Media.getBitmap(context.contentResolver, image)
-
-        } else {
-            val source = ImageDecoder.createSource(context.contentResolver, image)
-            ImageDecoder.decodeBitmap(source)
-        }
+        _bitmapImage.value = convertUriToImage(image, context)
     }
 
     private fun convertStringToImage(image: String): Bitmap {
@@ -161,6 +181,17 @@ class UserGlobalState @Inject constructor(
     }
 }
 
+
+fun convertUriToImage(uri: Uri, context: Context): Bitmap {
+    return if (Build.VERSION.SDK_INT < 28) {
+        MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+
+    } else {
+        val source = ImageDecoder.createSource(context.contentResolver, uri)
+        ImageDecoder.decodeBitmap(source)
+    }
+
+}
 
 data class SignInResult(
     val data: UserFromGoogle?,

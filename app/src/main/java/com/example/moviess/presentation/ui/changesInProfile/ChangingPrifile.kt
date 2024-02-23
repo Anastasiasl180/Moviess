@@ -1,7 +1,6 @@
 package com.example.moviess.presentation.ui.changesInProfile
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,6 +21,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -31,7 +31,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.canhub.cropper.CropImage
@@ -49,6 +49,7 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.example.moviess.R
+import com.example.moviess.di.convertUriToImage
 import com.example.moviess.presentation.ui.login_screen.SignInViewModel
 
 @Composable
@@ -76,40 +77,31 @@ fun Scaffold(content: @Composable () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenOfProfile(viewModel: SignInViewModel) {
+fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit) {
 
-    val imageCropLauncher = rememberLauncherForActivityResult(CropImageContract()) { result ->
-        if (result.isSuccessful && result.uriContent != null) {
-            viewModel.globalState.saveImage(result.uriContent!!)
-        } else {
-            val exception = result.error
-        }
-    }
 
     val oldUserName by remember {
         mutableStateOf(viewModel.globalState.username.value)
     }
-    val oldImage by remember {
+    var oldImage by remember {
         mutableStateOf(
             viewModel.globalState.bitmapImage.value
         )
     }
 
+
     var openDialog by remember { mutableStateOf(false) }
 
-   fun convertStringToImage(image: String): Bitmap {
-        val list = image.substring(1, image.length - 1).split(", ").map {
-            it.toInt()
+    val context = LocalContext.current
 
+    val imageCropLauncher = rememberLauncherForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful && result.uriContent != null) {
+            oldImage = convertUriToImage(result.uriContent!!, context)
+        } else {
+            val exception = result.error
         }
-        val byteArray = ByteArray(list.size)
-        for (i in list.indices) {
-            byteArray[i] = list[i].toByte()
-
-        }
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-
     }
+
 
     Box() {
         Column(
@@ -118,9 +110,9 @@ fun ScreenOfProfile(viewModel: SignInViewModel) {
                 .padding(top = 100.dp)
         )
         {
-            if (viewModel.globalState.bitmapImage.value != null) {
+            if (oldImage != null) {
                 Image(
-                    bitmap = viewModel.globalState.bitmapImage.value?.asImageBitmap()!!,
+                    bitmap = oldImage!!.asImageBitmap(),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -189,15 +181,19 @@ fun ScreenOfProfile(viewModel: SignInViewModel) {
                         .fillMaxWidth(0.7f)
                         .height(60.dp)
                         .clickable { openDialog = true }) {
-                        Text(text = "Text", modifier = Modifier, color = Color.Black)
-                        //viewModel.globalState.username.value)
+                        Text(
+                            text = viewModel.globalState.username.value,
+                            modifier = Modifier,
+                            color = Color.Black
+                        )
+                        viewModel.globalState.username.value
 
                     }
                     Card(modifier = Modifier
                         .fillMaxWidth(0.7f)
                         .height(60.dp)
                         .clickable { }) {
-                        Text(text = "Text", modifier = Modifier, color = Color.Black)
+                        Text(text =viewModel.signIn.toString() , modifier = Modifier, color = Color.Black)
 
 
                     }
@@ -212,6 +208,10 @@ fun ScreenOfProfile(viewModel: SignInViewModel) {
 
 
                 }
+            }
+            Button(onClick = { viewModel.globalState.deletePerson()
+            navigateToSignUp()}) {
+                Text(text = "Delete")
             }
             if (openDialog) {
                 AlertDialog(onDismissRequest = { openDialog = false },
@@ -232,8 +232,13 @@ fun ScreenOfProfile(viewModel: SignInViewModel) {
                         }
                     }, confirmButton = {
                         TextButton(onClick = {
-
-                            //logic
+                            Log.wtf("kmdfkddf", "ooooo")
+                            val newPerson =
+                                viewModel.globalState.getNewPersonMap(
+                                    oldUserName,
+                                    oldImage?.let { viewModel.globalState.bitMapToString(it) }
+                                )
+                            viewModel.globalState.updatePerson(newPerson)
                             openDialog = false
                         }, modifier = Modifier.padding(top = 300.dp)) {
                             Text(text = "Change")

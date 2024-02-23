@@ -2,6 +2,7 @@ package com.example.moviess.presentation.ui.homeScreen
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -40,11 +41,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -116,7 +120,7 @@ fun Drawer(
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
-    val resizedBitmap = bitmap?.scale(width = 30, height = 30)
+    val resizedBitmap = bitmap
     var checked by remember { mutableStateOf(false) }
     val darkTheme by remember { mutableStateOf(false) }
 
@@ -136,16 +140,17 @@ fun Drawer(
                         onClick = { navigateToProfile() },
                         icon = {
                             if (resizedBitmap != null) {
-                                Icon(
+                                Image(
                                     bitmap = resizedBitmap.asImageBitmap(),
-
+                                    contentDescription = null,
                                     modifier = Modifier
-                                        .size(40.dp)
+                                        .clickable { scope.launch { drawerState.open() } }
+                                        .size(50.dp)
                                         .clip(CircleShape)
-                                        .background(Color.Red),
-                                    contentDescription = "Profile",
+                                    , contentScale = ContentScale.FillBounds
+                                    , alignment = Alignment.Center
 
-                                    )
+                                )
                             }
                         }
                     )
@@ -222,13 +227,15 @@ fun Drawer(
 
                                 if (bitmap != null) {
                                     if (resizedBitmap != null) {
-                                        Icon(
+                                        Image(
                                             bitmap = resizedBitmap.asImageBitmap(),
                                             contentDescription = null,
                                             modifier = Modifier
                                                 .clickable { scope.launch { drawerState.open() } }
                                                 .size(50.dp)
                                                 .clip(CircleShape)
+                                            , contentScale = ContentScale.FillBounds
+                                            , alignment = Alignment.Center
 
                                         )
                                     }

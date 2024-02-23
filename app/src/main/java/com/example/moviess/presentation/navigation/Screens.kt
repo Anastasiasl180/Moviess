@@ -9,5 +9,6 @@ enum class Screens(val route:String) {
     SIGNIN("sigIn_screen"),
     AVATAR("avatar"),
     JENRES("jenres"),
-    PROFILE("profile")
+    PROFILE("profile"),
+    RESETINGPASSWORD("resetting")
 }

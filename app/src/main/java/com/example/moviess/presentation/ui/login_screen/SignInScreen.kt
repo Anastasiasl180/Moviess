@@ -27,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -56,6 +57,7 @@ import kotlinx.coroutines.runBlocking
 fun SignIpScreen(
     viewModel: SignInViewModel = hiltViewModel(),
     navigateToHome: () -> Unit,
+    navigateToReset:() ->Unit
 
 
     ) {
@@ -141,6 +143,9 @@ fun SignIpScreen(
 
 
                 })
+            TextButton(onClick = { navigateToReset() }) {
+                Text(text = "Forgot password?")
+            }
             Button(
                 onClick = {
                     viewModel.logInUser(email, password, callbackIfSuccess = {
@@ -221,6 +226,14 @@ fun SignIpScreen(
                         if (state.value?.isError?.isNotEmpty() == true) {
                             val error = state.value?.isError
                             Toast.makeText(context, "${error}", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+                LaunchedEffect(key1 = state.value?.isError ){
+                    scope.launch {
+                        if (state.value?.isError?.isEmpty() == true){
+                            val error = state.value?.isError
+                            Toast.makeText(context,"User not found", Toast.LENGTH_LONG).show()
                         }
                     }
                 }
