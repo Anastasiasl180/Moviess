@@ -13,6 +13,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.Firebase
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore

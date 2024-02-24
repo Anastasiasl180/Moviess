@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.sharp.ArrowBack
+import androidx.compose.material.icons.sharp.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -77,7 +80,7 @@ fun Scaffold(content: @Composable () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit) {
+fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit,navigateToChangePassword:()-> Unit) {
 
 
     val oldUserName by remember {
@@ -181,19 +184,42 @@ fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit) {
                         .fillMaxWidth(0.7f)
                         .height(60.dp)
                         .clickable { openDialog = true }) {
-                        Text(
-                            text = viewModel.globalState.username.value,
-                            modifier = Modifier,
-                            color = Color.Black
-                        )
-                        viewModel.globalState.username.value
+                        Row(modifier = Modifier.fillMaxSize()){
+                            Text(
+                                text = "Your username",
+                                modifier = Modifier,
+                                color = Color.Black
+                            )
+                            IconButton(onClick = { /*TODO*/ }) {
+
+                                Icon(
+                                    imageVector = Icons.Sharp.KeyboardArrowRight,
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+                                
+                            }
+                        }
+                       
+
 
                     }
                     Card(modifier = Modifier
                         .fillMaxWidth(0.7f)
                         .height(60.dp)
                         .clickable { }) {
-                        Text(text =viewModel.signIn.toString() , modifier = Modifier, color = Color.Black)
+                        Row {
+                            Text(text ="Your email and password", modifier = Modifier, color = Color.Black)
+                            IconButton(onClick = { navigateToChangePassword() }) {
+
+                                Icon(
+                                    imageVector = Icons.Sharp.KeyboardArrowRight,
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+
+                            }
+                        }
 
 
                     }
@@ -201,7 +227,19 @@ fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit) {
                         .fillMaxWidth(0.7f)
                         .height(60.dp)
                         .clickable { }) {
-                        Text(text = "Text", modifier = Modifier, color = Color.Black)
+                        Row {
+                            Text(text = "Text", modifier = Modifier, color = Color.Black)
+                            IconButton(onClick = { /*TODO*/ }) {
+
+                                Icon(
+                                    imageVector = Icons.Sharp.KeyboardArrowRight,
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+
+                            }
+                        }
+
 
 
                     }
