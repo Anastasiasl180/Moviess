@@ -1,7 +1,5 @@
 package com.example.moviess.presentation.ui.changesInProfile
 
-import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,20 +8,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.material.icons.sharp.KeyboardArrowRight
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -32,7 +24,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,12 +38,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.canhub.cropper.CropImage
-import com.canhub.cropper.CropImageContract
-import com.canhub.cropper.CropImageContractOptions
-import com.canhub.cropper.CropImageOptions
 import com.example.moviess.R
-import com.example.moviess.di.convertUriToImage
 import com.example.moviess.presentation.ui.login_screen.SignInViewModel
 
 @Composable
@@ -80,13 +66,14 @@ fun Scaffold(content: @Composable () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit,navigateToChangePassword:()-> Unit) {
+fun ScreenOfProfile(
+    viewModel: SignInViewModel,
+    navigateToSignUp: () -> Unit,
+    navigateToChangePassword: () -> Unit,
+    navigateToChangeUserName: () -> Unit
+) {
 
-
-    val oldUserName by remember {
-        mutableStateOf(viewModel.globalState.username.value)
-    }
-    var oldImage by remember {
+    val oldImage by remember {
         mutableStateOf(
             viewModel.globalState.bitmapImage.value
         )
@@ -96,15 +83,6 @@ fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit,naviga
     var openDialog by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
-
-    val imageCropLauncher = rememberLauncherForActivityResult(CropImageContract()) { result ->
-        if (result.isSuccessful && result.uriContent != null) {
-            oldImage = convertUriToImage(result.uriContent!!, context)
-        } else {
-            val exception = result.error
-        }
-    }
-
 
     Box() {
         Column(
@@ -140,27 +118,6 @@ fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit,naviga
                 )
 
             }
-            Image(painter = painterResource(id = R.drawable.baseline_camera_alt_24),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(start = 90.dp)
-                    .offset(y = -35.dp)
-                    .clip(CircleShape)
-                    .background(Color.Blue)
-                    .size(50.dp)
-                    .padding(10.dp)
-                    .clickable {
-                        val cropOption = CropImageContractOptions(
-                            CropImage.CancelledResult.uriContent,
-                            CropImageOptions()
-                        )
-                        imageCropLauncher.launch(cropOption)
-
-                    }
-
-
-            )
             ElevatedCard(
                 modifier = Modifier
                     .padding(top = 100.dp)
@@ -184,23 +141,22 @@ fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit,naviga
                         .fillMaxWidth(0.7f)
                         .height(60.dp)
                         .clickable { openDialog = true }) {
-                        Row(modifier = Modifier.fillMaxSize()){
+                        Row(modifier = Modifier.fillMaxSize()) {
                             Text(
                                 text = "Your username",
                                 modifier = Modifier,
                                 color = Color.Black
                             )
-                            IconButton(onClick = { /*TODO*/ }) {
+                            IconButton(onClick = { navigateToChangeUserName() }) {
 
                                 Icon(
                                     imageVector = Icons.Sharp.KeyboardArrowRight,
                                     contentDescription = null,
                                     tint = Color.Black
                                 )
-                                
+
                             }
                         }
-                       
 
 
                     }
@@ -209,7 +165,11 @@ fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit,naviga
                         .height(60.dp)
                         .clickable { }) {
                         Row {
-                            Text(text ="Your email and password", modifier = Modifier, color = Color.Black)
+                            Text(
+                                text = "Your email and password",
+                                modifier = Modifier,
+                                color = Color.Black
+                            )
                             IconButton(onClick = { navigateToChangePassword() }) {
 
                                 Icon(
@@ -241,54 +201,17 @@ fun ScreenOfProfile(viewModel: SignInViewModel,navigateToSignUp:() ->Unit,naviga
                         }
 
 
-
                     }
 
 
                 }
             }
-            Button(onClick = { viewModel.globalState.deletePerson()
-            navigateToSignUp()}) {
+            Button(onClick = {
+                viewModel.globalState.deletePerson()
+                navigateToSignUp()
+            }) {
                 Text(text = "Delete")
             }
-            if (openDialog) {
-                AlertDialog(onDismissRequest = { openDialog = false },
-
-                    dismissButton = {
-                        IconButton(
-                            onClick = { openDialog = false },
-                            modifier = Modifier
-                                .background(color = Color.Black)
-                                .fillMaxWidth()
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = "image",
-                                modifier = Modifier.padding(start = 200.dp, top = 20.dp)
-                            )
-
-                        }
-                    }, confirmButton = {
-                        TextButton(onClick = {
-                            Log.wtf("kmdfkddf", "ooooo")
-                            val newPerson =
-                                viewModel.globalState.getNewPersonMap(
-                                    oldUserName,
-                                    oldImage?.let { viewModel.globalState.bitMapToString(it) }
-                                )
-                            viewModel.globalState.updatePerson(newPerson)
-                            openDialog = false
-                        }, modifier = Modifier.padding(top = 300.dp)) {
-                            Text(text = "Change")
-
-                        }
-                    }, modifier = Modifier
-                        .width(400.dp)
-                        .height(400.dp), containerColor = Color.Red
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
 
 
         }

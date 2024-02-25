@@ -14,6 +14,7 @@ import com.example.moviess.presentation.ui.Genres.GenresViewModel
 import com.example.moviess.presentation.ui.Poster.DetailsViewModel
 import com.example.moviess.presentation.ui.Poster.PagerDetails
 import com.example.moviess.presentation.ui.changesInProfile.EditingScreens.ChangePassword
+import com.example.moviess.presentation.ui.changesInProfile.EditingScreens.ChangingUserName
 import com.example.moviess.presentation.ui.changesInProfile.Scaffold
 import com.example.moviess.presentation.ui.changesInProfile.ScreenOfProfile
 import com.example.moviess.presentation.ui.homeScreen.Drawer
@@ -125,6 +126,8 @@ fun Navigation() {
                     navController.navigate(Screens.SIGNUP.route)
                 }, navigateToChangePassword = {
                     navController.navigate(Screens.CHANGEDPASSWORD.route)
+                }, navigateToChangeUserName = {
+                    navController.navigate(Screens.CHANGEUSERNAME.route)
                 })
             }
 
@@ -132,6 +135,10 @@ fun Navigation() {
         composable(Screens.CHANGEDPASSWORD.route){
             val viewModel = hiltViewModel<SignInViewModel>()
             ChangePassword(viewModel)
+        }
+        composable(Screens.CHANGEUSERNAME.route){
+            val viewModel = hiltViewModel<SignInViewModel>()
+            ChangingUserName(viewModel = viewModel)
         }
 
 

@@ -7,6 +7,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -108,7 +109,7 @@ class UserGlobalState @Inject constructor(
     fun getNewPersonMap(oldName: String, oldImage: String?): Map<String, Any> {
         val map = mutableMapOf<String, Any>()
         if (oldName.isNotEmpty()) {
-            map["name"] = username
+            map["name"] = oldName
         }
 
         if (oldImage != null) {
