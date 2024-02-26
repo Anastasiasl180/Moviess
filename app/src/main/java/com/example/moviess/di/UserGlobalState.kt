@@ -7,14 +7,12 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.Firebase
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
@@ -47,13 +45,20 @@ class UserGlobalState @Inject constructor(
         _username.value = name
     }
 
+    private val _moviesId: MutableState<List<Int>> = mutableStateOf(emptyList())
+    val moviesId: State<List<Int>> = _moviesId
 
     fun saveUser(callback: () -> Unit) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val bos = ByteArrayOutputStream()
             bitmapImage.value?.compress(Bitmap.CompressFormat.PNG, 100, bos)
             val bArray = bos.toByteArray()
-            val user = User(bArray.contentToString(), username.value, uid = auth.uid!!)
+            val user = User(
+                bArray.contentToString(),
+                username.value,
+                uid = auth.uid!!,
+                idOfMovies = _moviesId.value
+            )
             personCollectionRef.add(user).await()
             withContext(Dispatchers.Main) {
                 callback()
@@ -81,6 +86,9 @@ class UserGlobalState @Inject constructor(
                             _bitmapImage.value = convertStringToImage(it)
 
                         }
+                        if (person != null) {
+                            _moviesId.value = person.idOfMovies
+                        }
                         callback()
                     }
 
@@ -98,6 +106,19 @@ class UserGlobalState @Inject constructor(
         }
     }
 
+
+    fun onFavouriteIconClick(id: Int) {
+
+        if (!moviesId.value.contains(id)) {
+            _moviesId.value = moviesId.value + id
+        } else {
+            _moviesId.value = moviesId.value - id
+        }
+
+        updatePerson(newPersonMap = getNewPersonMapForMoviesId())
+    }
+
+
     fun bitMapToString(bitmap: Bitmap): String {
         val bos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
@@ -106,7 +127,15 @@ class UserGlobalState @Inject constructor(
         return encodedString
     }
 
-    fun getNewPersonMap(oldName: String, oldImage: String?): Map<String, Any> {
+    fun getNewPersonMapForMoviesId(): Map<String, Any> {
+
+        val map = mutableMapOf<String, Any>()
+        map["idOfMovies"] = moviesId.value
+        return map
+
+    }
+
+    fun getNewPersonMapForMoviesId(oldName: String, oldImage: String?): Map<String, Any> {
         val map = mutableMapOf<String, Any>()
         if (oldName.isNotEmpty()) {
             map["name"] = oldName
@@ -143,6 +172,7 @@ class UserGlobalState @Inject constructor(
                 }
             }
         }
+
     fun deletePerson() =
         CoroutineScope(Dispatchers.IO).launch {
             val peronQuerry = personCollectionRef
@@ -152,7 +182,7 @@ class UserGlobalState @Inject constructor(
             if (peronQuerry.documents.isNotEmpty()) {
                 for (document in peronQuerry) {
                     try {
-                       personCollectionRef.document(document.id).delete().await()
+                        personCollectionRef.document(document.id).delete().await()
                     } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
@@ -209,7 +239,8 @@ data class UserFromGoogle(
 data class User(
     val image: String?,
     val name: String,
-    val uid: String
+    val uid: String,
+    val idOfMovies: List<Int>
 ) {
-    constructor() : this(null, "", "")
+    constructor() : this(null, "", "", emptyList())
 }

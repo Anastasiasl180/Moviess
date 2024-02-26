@@ -1,6 +1,7 @@
 package com.example.moviess.presentation.ui.Poster
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.sharp.FavoriteBorder
 import androidx.compose.material.icons.sharp.Share
@@ -50,6 +52,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.LifecycleOwner
 import coil.compose.AsyncImage
 import com.example.moviess.common.Constants
+import com.example.moviess.di.UserGlobalState
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -227,14 +230,22 @@ fun DetailList(viewModel: DetailsViewModel, onClickBack: () -> Unit) {
                         Box(modifier = Modifier.padding(top = 150.dp, start = 300.dp)) {
                             Row() {
                                 IconButton(
-                                    onClick = { /*TODO*/ }, modifier = Modifier
+                                    onClick = {
+                                        viewModel.onClick(viewModel.movieDetails.value!!.id)
+                                              Log.wtf("",viewModel.movieDetails.value.toString())}, modifier = Modifier
                                         .padding(top = 23.dp)
                                 ) {
-                                    Icon(
-                                        imageVector = Icons.Sharp.FavoriteBorder,
-                                        contentDescription = null,
-                                        tint = Color.White
-                                    )
+                                    if(viewModel.moviesId.contains(viewModel.movieDetails.value!!.id)) {
+                                        Icon(imageVector =Icons.Filled.Favorite , contentDescription = "")
+                                    }else{
+                                        Icon(
+                                            imageVector = Icons.Sharp.FavoriteBorder,
+                                            contentDescription = null,
+                                            tint = Color.White
+                                        )
+                                    }
+
+
                                 }
 
                                 IconButton(

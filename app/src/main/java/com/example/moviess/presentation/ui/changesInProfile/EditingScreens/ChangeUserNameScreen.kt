@@ -1,7 +1,5 @@
 package com.example.moviess.presentation.ui.changesInProfile.EditingScreens
 
-import android.graphics.Bitmap
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,8 +23,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -150,7 +146,7 @@ fun ChangingUserName(viewModel: SignInViewModel) {
             TextButton(
                 onClick = {
                     val newPerson =
-                        viewModel.globalState.getNewPersonMap(
+                        viewModel.globalState.getNewPersonMapForMoviesId(
                             oldUserName,
                             oldImage?.let { viewModel.globalState.bitMapToString(it) }
                         )

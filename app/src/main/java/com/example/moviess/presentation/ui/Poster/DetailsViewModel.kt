@@ -11,16 +11,20 @@ import com.example.moviess.data.remote.dto.Crew
 import com.example.moviess.data.remote.dto.Detail
 import com.example.moviess.data.remote.dto.MovieVideoData
 import com.example.moviess.di.GlobalMovieDetails
+import com.example.moviess.di.UserGlobalState
 import com.example.moviess.domain.use_case.HomePageUseCase.GetMovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import okhttp3.internal.userAgent
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val globalState: GlobalMovieDetails, private val getMovieUseCase: GetMovieUseCase
+    private val globalState: GlobalMovieDetails,
+    private val getMovieUseCase: GetMovieUseCase,
+    private val userGlobalState: UserGlobalState
 ) : ViewModel() {
 
     private val _movieDetails: MutableState<Detail?> = mutableStateOf(null)
@@ -36,6 +40,13 @@ class DetailsViewModel @Inject constructor(
         getDetails(Locale.getDefault().language, globalState.moviesDetails.value)
         getPerson(globalState.moviesDetails.value, Locale.getDefault().language)
         getVideo(globalState.moviesDetails.value, Locale.getDefault().language)
+    }
+
+    val moviesId
+        get() = userGlobalState.moviesId.value
+    fun onClick(id: Int) {
+
+        userGlobalState.onFavouriteIconClick(id)
     }
 
 
@@ -68,8 +79,10 @@ class DetailsViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _video.value = searchingTrailer(result.data ?: emptyList())
-                }is Resource.Error -> {
-                    Log.wtf("dfhhjfh",result.message)
+                }
+
+                is Resource.Error -> {
+                    Log.wtf("dfhhjfh", result.message)
                 }
 
                 else -> {}

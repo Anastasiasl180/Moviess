@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.moviess.common.Constants
 import com.example.moviess.data.remote.dto.Movie
+import com.example.moviess.di.UserGlobalState
+import com.example.moviess.presentation.ui.Poster.DetailsViewModel
 import com.example.moviess.presentation.ui.theme.Pink40
 import com.example.moviess.presentation.ui.theme.Pink44
 
@@ -48,12 +50,12 @@ fun WishList(onClick: () -> Unit) {
     }
 }
 @Composable
-fun WishItem(movie:Movie, clickToDetails: (Int) -> Unit) {
+fun WishItem(movie:Movie, clickToDetails: (Int) -> Unit,viewModel: DetailsViewModel) {
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
     ElevatedCard(
         modifier = Modifier
-            .clickable { clickToDetails(movie.id) }
+            .clickable { viewModel.movieDetails.value?.let { clickToDetails(it.id) } }
             .fillMaxWidth()
             .height(225.dp), colors = CardDefaults.cardColors(containerColor = Pink40)
 
