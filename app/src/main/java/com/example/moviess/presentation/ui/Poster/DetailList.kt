@@ -237,6 +237,7 @@ fun DetailList(viewModel: DetailsViewModel, onClickBack: () -> Unit) {
                                 ) {
                                     if(viewModel.moviesId.contains(viewModel.movieDetails.value!!.id)) {
                                         Icon(imageVector =Icons.Filled.Favorite , contentDescription = "")
+                                        Log.wtf("",viewModel.moviesId.toString())
                                     }else{
                                         Icon(
                                             imageVector = Icons.Sharp.FavoriteBorder,

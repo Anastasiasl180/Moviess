@@ -1,7 +1,5 @@
 package com.example.moviess.presentation.ui.whishList
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,13 +12,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,33 +34,39 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.moviess.common.Constants
-import com.example.moviess.data.remote.dto.Movie
-import com.example.moviess.di.UserGlobalState
-import com.example.moviess.presentation.ui.Poster.DetailsViewModel
-import com.example.moviess.presentation.ui.theme.Pink40
+import com.example.moviess.data.remote.dto.Detail
 import com.example.moviess.presentation.ui.theme.Pink44
 
 @Composable
-fun WishList(onClick: () -> Unit) {
+fun WishList(viewModel: WishListViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red)
     ) {
-        LazyColumn() {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            items(viewModel.details) { it ->
+                Card(
+                    //modifier = Modifier.clickable { viewModel.moviesId.size.let { clickToDetails(it) } }
+                ) {
+                    WishItem(movie = it, viewModel)
 
+                }
+            }
         }
     }
 }
+
 @Composable
-fun WishItem(movie:Movie, clickToDetails: (Int) -> Unit,viewModel: DetailsViewModel) {
+fun WishItem(movie: Detail, viewModel: WishListViewModel) {
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
     ElevatedCard(
         modifier = Modifier
-            .clickable { viewModel.movieDetails.value?.let { clickToDetails(it.id) } }
             .fillMaxWidth()
-            .height(225.dp), colors = CardDefaults.cardColors(containerColor = Pink40)
+            .height(225.dp)
 
 
     ) {
@@ -65,8 +74,12 @@ fun WishItem(movie:Movie, clickToDetails: (Int) -> Unit,viewModel: DetailsViewMo
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
+
+            IconButton(onClick = { viewModel.deleteMovie(movie.id) }) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "")
+            }
             AsyncImage(
-                model = Constants.BASE_IMAGE + movie.posterPath, contentDescription = "Image2",
+                model = Constants.BASE_IMAGE + movie.posterPath, contentDescription = "Image",
                 modifier = Modifier
 
                     .fillMaxHeight()
@@ -104,6 +117,7 @@ fun WishItem(movie:Movie, clickToDetails: (Int) -> Unit,viewModel: DetailsViewMo
                                 }
                             }
                         }
+
                     })
 
             }

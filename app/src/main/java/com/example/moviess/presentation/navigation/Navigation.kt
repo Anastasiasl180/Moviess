@@ -30,6 +30,7 @@ import com.example.moviess.presentation.ui.signup_screen.SignUpScreen
 import com.example.moviess.presentation.ui.signup_screen.SignUpViewModel
 import com.example.moviess.presentation.ui.signup_screen.continuedRegistration.SecondPart
 import com.example.moviess.presentation.ui.whishList.WishList
+import com.example.moviess.presentation.ui.whishList.WishListViewModel
 
 @Composable
 fun Navigation() {
@@ -89,9 +90,8 @@ fun Navigation() {
 
 
         composable(Screens.LIKED.route) {
-            WishList(onClick = {
-
-            })
+            val viewModel = hiltViewModel<WishListViewModel>()
+            WishList(viewModel = viewModel)
 
         }
         composable(Screens.SIGNUP.route) {

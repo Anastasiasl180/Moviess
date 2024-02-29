@@ -105,18 +105,18 @@ class UserGlobalState @Inject constructor(
 
         }
     }
-
-
     fun onFavouriteIconClick(id: Int) {
 
         if (!moviesId.value.contains(id)) {
             _moviesId.value = moviesId.value + id
         } else {
             _moviesId.value = moviesId.value - id
+
         }
 
         updatePerson(newPersonMap = getNewPersonMapForMoviesId())
     }
+
 
 
     fun bitMapToString(bitmap: Bitmap): String {
@@ -192,6 +192,8 @@ class UserGlobalState @Inject constructor(
                 }
             }
         }
+
+
 
     fun saveImage(image: Uri) {
 
