@@ -3,7 +3,6 @@ package com.example.moviess.presentation.ui.searchScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -17,14 +16,13 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.example.moviess.presentation.ui.theme.Pink44
-import com.example.moviess.presentation.ui.theme.Pink46
 import com.example.moviess.presentation.ui.theme.color
 import com.example.moviess.presentation.ui.theme.color2
 
@@ -33,7 +31,8 @@ import com.example.moviess.presentation.ui.theme.color2
 fun SearchBar(
     searchingViewModel: SearchingViewModel,
     onClickBack: () -> Unit,
-    navigateToMovie: () -> Unit
+    navigateToMovie: () -> Unit,
+    
 ) {
 
     Scaffold(

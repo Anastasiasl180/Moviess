@@ -29,8 +29,7 @@ import javax.inject.Singleton
 @Singleton
 class UserGlobalState @Inject constructor(
     private val context: Context,
-    private val auth: FirebaseAuth,
-    private val oneTapClient: SignInClient
+    private val auth: FirebaseAuth
 
 ) {
     private val personCollectionRef = Firebase.firestore.collection("users")

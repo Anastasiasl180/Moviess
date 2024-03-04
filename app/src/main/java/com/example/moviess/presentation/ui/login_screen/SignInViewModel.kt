@@ -28,7 +28,6 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val repository: AuthRepository,
     val globalState: UserGlobalState,
-    val signInByGoogle: SignInByGoogle,
     private val auth: FirebaseAuth,
 ) : ViewModel() {
 

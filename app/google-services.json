@@ -1,45 +1,26 @@
 {
   "project_info": {
-    "project_number": "242559520847",
-    "firebase_url": "https://moviess-296d8-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "moviess-296d8",
-    "storage_bucket": "moviess-296d8.appspot.com"
+    "project_number": "602617651105",
+    "project_id": "moviess-6e160",
+    "storage_bucket": "moviess-6e160.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:242559520847:android:ad1c8f90f31ec2a2de1a3a",
+        "mobilesdk_app_id": "1:602617651105:android:3082b1785440dcfd0735e0",
         "android_client_info": {
           "package_name": "com.example.moviess"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "242559520847-15bd0dlhhvpj90416hrufsarjghm1ia4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.moviess",
-            "certificate_hash": "fe006475aeae455a05ea4af35cd530d335c5538a"
-          }
-        },
-        {
-          "client_id": "242559520847-orns4uvo7bpqjpeaqes57hl9dj5abfs8.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCWjAQRskdr0NO6w-Wn3aREe-u9Y0-WzuQ"
+          "current_key": "AIzaSyCBANkzjTOeZ82di0iBQdNMy-ceHSCABEM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "242559520847-orns4uvo7bpqjpeaqes57hl9dj5abfs8.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

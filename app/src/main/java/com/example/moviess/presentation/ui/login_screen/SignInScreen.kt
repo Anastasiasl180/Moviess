@@ -78,20 +78,6 @@ fun SignIpScreen(
 //        }
 //    }
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult(),
-        onResult = { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                scope.launch {
-                    val signInResult = viewModel.signInByGoogle.getSignInWithIntent(
-                        intent = result.data ?: return@launch
-                    )
-                    viewModel.onSignInResult(signInResult)
-                }
-            }
-        }
-    )
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -175,35 +161,7 @@ fun SignIpScreen(
             }
 
 
-            Text(
-                text = "or connect with",
-                fontWeight = FontWeight.Medium,
-                color = Color.Gray,
-                modifier = Modifier.padding(top = 100.dp)
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                IconButton(onClick = {
-                    scope.launch {
-                        val signInIntentSender = viewModel.signInByGoogle.signInByGoogle()
-                        launcher.launch(
-                            IntentSenderRequest.Builder(
-                                signInIntentSender ?: return@launch
-                            ).build()
-                        )
-                    }
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
 
-                }
                 Spacer(modifier = Modifier.width(20.dp))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
@@ -237,4 +195,3 @@ fun SignIpScreen(
         }
 
     }
-}

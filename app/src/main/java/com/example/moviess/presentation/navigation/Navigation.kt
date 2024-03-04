@@ -1,5 +1,6 @@
 package com.example.moviess.presentation.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,11 +33,12 @@ import com.example.moviess.presentation.ui.signup_screen.continuedRegistration.S
 import com.example.moviess.presentation.ui.whishList.WishList
 import com.example.moviess.presentation.ui.whishList.WishListViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation() {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screens.SIGNUP.route) {
+    NavHost(navController = navController, startDestination = Screens.SEARCH.route) {
 
         composable(Screens.HOME.route) {
             val viewModel = hiltViewModel<MovieViewModel>()

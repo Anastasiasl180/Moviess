@@ -3,7 +3,6 @@ package com.example.moviess.presentation.ui.searchScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -50,33 +49,44 @@ fun SearchingMovies(
         modifier = Modifier
             .fillMaxSize(),
         contentPadding =
-        PaddingValues(start = 20.dp, end = 20.dp, top = 30.dp, bottom = 10.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        PaddingValues(),
+        verticalArrangement = Arrangement.Center
     ) {
         if (movies.isEmpty()) {
             item {
-                Box(
+
+                Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Blue), contentAlignment = Alignment.Center
+                        .fillMaxHeight(0.5f)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+
+
+
                 ) {
-                    Text(
-                        text = "No movie",
-                        color = Color.Black
-                    )
+
+                    Text(text = "No movie", color = Color.Black)
+
+
                 }
 
             }
         } else {
             items(movies) { movies ->
+
                 SearchingItem(movie = movies, getGenres = getGenres, onClick = { onClick(movies) })
 
             }
             item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(75.dp)) {
                     items(viewModel.stateOfListOfSearching.value.totalPage) {
                         TextButton(
-                            onClick = { viewModel.getSearchMovies(viewModel.textState.value, it+1) },
+                            onClick = {
+                                viewModel.getSearchMovies(
+                                    viewModel.textState.value,
+                                    it + 1
+                                )
+                            },
                             modifier = Modifier.background(
                                 Color.Blue
                             )
@@ -100,7 +110,9 @@ fun SearchingItem(movie: Movie, getGenres: (Movie) -> List<Genre>, onClick: () -
         modifier = Modifier
             .clickable { onClick() }
             .fillMaxWidth()
+            .padding(start = 10.dp, end = 10.dp, top = 15.dp)
             .height(225.dp), colors = CardDefaults.cardColors(containerColor = Pink40)
+
 
 
     ) {

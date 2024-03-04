@@ -60,15 +60,19 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
-    implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
-    implementation("androidx.compose.material3:material3-adaptive:1.0.0-alpha06")
-    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.0.0-alpha03")
 
-    implementation("androidx.compose.ui:ui-tooling:1.7.0-alpha02")
-    implementation("androidx.compose.material:material:1.7.0-alpha02")
-    implementation("androidx.compose.animation:animation:1.7.0-alpha02")
-    implementation("androidx.compose.runtime:runtime:1.7.0-alpha02")
+    implementation("androidx.compose.material3.adaptive:adaptive-android:1.0.0-alpha07")//
+
+    implementation ("androidx.compose.material3:material3:1.2.0")
+    implementation ("androidx.compose.material3:material3-window-size-class:1.2.0")
+        //implementation ("androidx.compose.material3:material3-adaptive:1.0.0-alpha06")
+    implementation ("androidx.compose.material3:material3-adaptive-navigation-suite:1.0.0-alpha04")
+
+
+    implementation("androidx.compose.ui:ui-tooling:1.7.0-alpha03")
+    implementation("androidx.compose.material:material:1.7.0-alpha03")
+    implementation("androidx.compose.animation:animation:1.7.0-alpha03")
+    implementation("androidx.compose.runtime:runtime:1.7.0-alpha03")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.compose.ui:ui-tooling")
@@ -82,7 +86,7 @@ dependencies {
 
     implementation("com.github.CanHub:Android-Image-Cropper:4.0.0")
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:0.28")
-    implementation("androidx.compose.foundation:foundation:1.6.1")
+    implementation("androidx.compose.foundation:foundation:1.6.2")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -95,11 +99,11 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.10.1")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.3")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.firebase:firebase-storage:20.3.0")
-    implementation("com.google.firebase:firebase-database:20.3.0")
+    implementation("com.google.firebase:firebase-database:20.3.1")
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
 
     //Progress Dialog Library
