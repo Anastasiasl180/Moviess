@@ -38,7 +38,7 @@ import com.example.moviess.presentation.ui.whishList.WishListViewModel
 fun Navigation() {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screens.SEARCH.route) {
+    NavHost(navController = navController, startDestination = Screens.SIGNUP.route) {
 
         composable(Screens.HOME.route) {
             val viewModel = hiltViewModel<MovieViewModel>()

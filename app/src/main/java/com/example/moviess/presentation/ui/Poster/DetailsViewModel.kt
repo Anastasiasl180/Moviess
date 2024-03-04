@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviess.common.Resource
+import com.example.moviess.data.remote.dto.Cast
 import com.example.moviess.data.remote.dto.Crew
 import com.example.moviess.data.remote.dto.Detail
 import com.example.moviess.data.remote.dto.MovieVideoData
@@ -30,8 +31,8 @@ class DetailsViewModel @Inject constructor(
     private val _movieDetails: MutableState<Detail?> = mutableStateOf(null)
     val movieDetails: State<Detail?> = _movieDetails
 
-    private val _people: MutableState<List<Crew>> = mutableStateOf(emptyList())
-    val people: State<List<Crew>> = _people
+    private val _people: MutableState<List<Cast>> = mutableStateOf(emptyList())
+    val people: State<List<Cast>> = _people
 
     private val _video: MutableState<MovieVideoData?> = mutableStateOf(null)
     val video: State<MovieVideoData?> = _video

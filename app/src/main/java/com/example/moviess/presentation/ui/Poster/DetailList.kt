@@ -1,7 +1,10 @@
 package com.example.moviess.presentation.ui.Poster
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -28,9 +30,11 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.sharp.FavoriteBorder
 import androidx.compose.material.icons.sharp.Share
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -44,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
@@ -52,7 +57,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.LifecycleOwner
 import coil.compose.AsyncImage
 import com.example.moviess.common.Constants
-import com.example.moviess.di.UserGlobalState
+import com.example.moviess.data.remote.dto.Detail
+import com.example.moviess.presentation.ui.searchScreen.searchBarScrollBehaviour
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -72,10 +78,14 @@ fun DetailList(viewModel: DetailsViewModel, onClickBack: () -> Unit) {
         val video by remember {
             viewModel.video
         }
+        val launcher =
+            rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
 
-        Scaffold(
+            }
+        val tioAppBarDefaults = searchBarScrollBehaviour()
+        Scaffold(modifier = Modifier.nestedScroll(tioAppBarDefaults.nestedScrollConnection),
             topBar = {
-                TopAppBar(colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = Color.Transparent),
+                TopAppBar(colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = Color.Transparent, scrolledContainerColor = Color.Transparent),
                     title = { /*TODO*/ }, navigationIcon = {
                         IconButton(
                             onClick = { onClickBack() }, modifier = Modifier
@@ -89,8 +99,9 @@ fun DetailList(viewModel: DetailsViewModel, onClickBack: () -> Unit) {
                         }
 
                     }
+                    , scrollBehavior = tioAppBarDefaults
                 )
-            }, containerColor = Color.Green
+            }
         ) { padding ->
 
             AsyncImage(
@@ -138,29 +149,44 @@ fun DetailList(viewModel: DetailsViewModel, onClickBack: () -> Unit) {
                                 text = detail.releaseDate,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
-                                    .padding(top = 5.dp, start = 155.dp)
+                                    .padding(top = 5.dp, start = 150.dp)
                             )
                             Row(
                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                                 horizontalArrangement = Arrangement.spacedBy(40.dp)
                             ) {
-                                Card() {
-                                    Row(horizontalArrangement = Arrangement.Center) {
-                                        Text(text = detail.voteAverage.roundVoteAverage(),)
-                                        Icon(
-                                            imageVector = Icons.Filled.Star,
-                                            contentDescription = "Star rating",
-                                            tint = Color.Yellow
-                                        )
+                                Card(modifier = Modifier.width(80.dp)) {
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        Alignment.Center
+                                    ) {
+                                        Row(horizontalArrangement = Arrangement.Center) {
+                                            Text(text = detail.voteAverage.roundVoteAverage())
+                                            Icon(
+                                                imageVector = Icons.Filled.Star,
+                                                contentDescription = "Star rating",
+                                                tint = Color.Yellow
+                                            )
+                                        }
                                     }
 
                                 }
-                                Card() {
-                                    Text(text = detail.runtime.convert())
+                                Card(modifier = Modifier.width(80.dp)) {
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        Alignment.Center
+                                    ) {
+                                        Text(text = detail.runtime.convert())
+                                    }
                                 }
-                                Card {
-                                    Text(text = detail.genres.joinToString(",") { it.name }
-                                        .split(",")[0])
+                                Card(modifier = Modifier.width(80.dp)) {
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        Alignment.Center
+                                    ) {
+                                        Text(text = detail.genres.joinToString(",") { it.name }
+                                            .split(",")[0])
+                                    }
                                 }
 
                             }
@@ -171,17 +197,20 @@ fun DetailList(viewModel: DetailsViewModel, onClickBack: () -> Unit) {
                         ) {
 
 
-                            Text(text = "Story Line")
+                            Text(
+                                text = "Story Line",
+                                style = MaterialTheme.typography.headlineMedium
+                            )
                             Text(
                                 text = detail.overview,
 
                                 )
-                            Text(text = "Cast")
+                            Text(text = "Cast", style = MaterialTheme.typography.headlineSmall)
 
                             LazyRow(
                                 modifier = Modifier
                                     .fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(20.dp)
+                                horizontalArrangement = Arrangement.spacedBy(30.dp)
                             ) {
 
                                 items(person) {
@@ -191,16 +220,30 @@ fun DetailList(viewModel: DetailsViewModel, onClickBack: () -> Unit) {
                                             contentDescription = "image",
                                             modifier = Modifier
                                                 .clip(RoundedCornerShape(10.dp))
-                                                .height(200.dp)
+                                                .height(180.dp)
+                                                .width(130.dp)
                                                 .aspectRatio(9 / 16f),
                                             contentScale = ContentScale.FillBounds
                                         )
-                                        Text(text = it.name,Modifier.padding(top = 10.dp))
+                                        Text(
+                                            text = it.name,
+                                            Modifier.padding(top = 10.dp),
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
 
                                     }
 
                                 }
                             }
+                        }
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "Watch trailer",
+                                modifier = Modifier
+                                    .padding(top = 80.dp)
+                                    .align(Alignment.Center),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
 
                         Box(modifier = Modifier.padding(40.dp)) {
@@ -232,13 +275,17 @@ fun DetailList(viewModel: DetailsViewModel, onClickBack: () -> Unit) {
                                 IconButton(
                                     onClick = {
                                         viewModel.onClick(viewModel.movieDetails.value!!.id)
-                                              Log.wtf("",viewModel.movieDetails.value.toString())}, modifier = Modifier
+                                        Log.wtf("", viewModel.movieDetails.value.toString())
+                                    }, modifier = Modifier
                                         .padding(top = 23.dp)
                                 ) {
-                                    if(viewModel.moviesId.contains(viewModel.movieDetails.value!!.id)) {
-                                        Icon(imageVector =Icons.Filled.Favorite , contentDescription = "")
-                                        Log.wtf("",viewModel.moviesId.toString())
-                                    }else{
+                                    if (viewModel.moviesId.contains(viewModel.movieDetails.value!!.id)) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Favorite,
+                                            contentDescription = ""
+                                        )
+                                        Log.wtf("", viewModel.moviesId.toString())
+                                    } else {
                                         Icon(
                                             imageVector = Icons.Sharp.FavoriteBorder,
                                             contentDescription = null,
@@ -250,7 +297,8 @@ fun DetailList(viewModel: DetailsViewModel, onClickBack: () -> Unit) {
                                 }
 
                                 IconButton(
-                                    onClick = { /*TODO*/ }, modifier = Modifier
+                                    onClick = { launcher.launch(getSharedActivityIntent(detail.title)) },
+                                    modifier = Modifier
                                         .padding(top = 23.dp, end = 35.dp)
                                 ) {
                                     Icon(
@@ -297,6 +345,16 @@ fun YoutubePlayer(
             })
         }
     })
+}
+
+fun getSharedActivityIntent(name: String): Intent {
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        putExtra(Intent.EXTRA_TEXT, name)
+        type = "text/plain"
+
+    }
+    return Intent.createChooser(intent, "")
+
 }
 
 

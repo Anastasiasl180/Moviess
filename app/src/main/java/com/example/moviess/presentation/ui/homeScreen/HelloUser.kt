@@ -60,7 +60,7 @@ import kotlinx.coroutines.launch
 fun TextHello(name: String, onImageClick: () -> Unit, bitmap: Bitmap?) {
     Row(
         Modifier
-            .padding(top = 40.dp, start = 120.dp)
+            .padding(top = 30.dp, start = 110.dp)
             .fillMaxSize(), horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column() {
@@ -145,14 +145,14 @@ fun Drawer(
                                     contentDescription = null,
                                     modifier = Modifier
                                         .clickable { scope.launch { drawerState.open() } }
-                                        .size(50.dp)
+                                        .size(40.dp)
                                         .clip(CircleShape)
                                     , contentScale = ContentScale.FillBounds
                                     , alignment = Alignment.Center
 
                                 )
                             }
-                        }
+                        },modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     )
                 } else {
                     NavigationDrawerItem(
@@ -208,6 +208,7 @@ fun Drawer(
         },
         drawerState = drawerState
     ) {
+
         Scaffold(
             topBar = {
 

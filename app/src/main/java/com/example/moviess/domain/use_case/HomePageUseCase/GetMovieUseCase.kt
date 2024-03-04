@@ -2,6 +2,7 @@ package com.example.moviess.domain.use_case.HomePageUseCase
 
 
 import com.example.moviess.common.Resource
+import com.example.moviess.data.remote.dto.Cast
 import com.example.moviess.data.remote.dto.Crew
 import com.example.moviess.data.remote.dto.Detail
 import com.example.moviess.data.remote.dto.GenreMoviesResponse
@@ -93,11 +94,11 @@ class GetMovieUseCase @Inject constructor(
         }
     }
 
-    fun crew(id: Int, language: String): Flow<Resource<List<Crew>>> = flow {
+    fun crew(id: Int, language: String): Flow<Resource<List<Cast>>> = flow {
         try {
             emit(Resource.Loading())
             val people = repository.getPeople(id, language)
-            emit(Resource.Success(people.crew))
+            emit(Resource.Success(people.cast))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "An unexpected errorr occured"))
         } catch (e: IOException) {

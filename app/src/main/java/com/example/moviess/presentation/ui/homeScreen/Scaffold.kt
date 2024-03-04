@@ -2,6 +2,7 @@ package com.example.moviess.presentation.ui.homeScreen
 
 import android.graphics.Bitmap
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -17,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.moviess.presentation.navigation.Screens
@@ -63,7 +65,7 @@ fun MainBottomBar(onClick: (Screens) -> Unit) {
         cornerRadius = shapeCornerRadius(cornerRadius = 34.dp),
         ballAnimation = Parabolic(tween(300)),
         indentAnimation = Height(tween(300)),
-        barColor = Color.White,
+
         ballColor = Color.White
     ) {
         navigationBarItems.forEach { item ->

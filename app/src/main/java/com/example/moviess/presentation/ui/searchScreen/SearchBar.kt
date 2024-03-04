@@ -2,7 +2,6 @@ package com.example.moviess.presentation.ui.searchScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -16,45 +15,59 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.example.moviess.presentation.ui.theme.color
+import com.example.moviess.presentation.ui.theme.color1
 import com.example.moviess.presentation.ui.theme.color2
 
 @OptIn(ExperimentalMaterial3Api::class)
+
+
 @Composable
 fun SearchBar(
     searchingViewModel: SearchingViewModel,
     onClickBack: () -> Unit,
     navigateToMovie: () -> Unit,
-    
-) {
 
-    Scaffold(
+    ) {
+    val tioAppBarDefaults = searchBarScrollBehaviour()
+    Scaffold(modifier = Modifier.nestedScroll(tioAppBarDefaults.nestedScrollConnection),
         topBar = {
             TopAppBar(title = { },
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
+                scrollBehavior = tioAppBarDefaults,
                 actions = {
                     TextField(
-                        modifier = Modifier.width(350.dp).background(
-                            brush = Brush.horizontalGradient(listOf(color, color2)), shape = RoundedCornerShape(35.dp)
-                        ),
+                        modifier = Modifier
+                            .width(300.dp)
+                            .background(
+                                brush = Brush.horizontalGradient(listOf(color1, color2)),
+                                shape = RoundedCornerShape(15.dp)
+                            ),
                         value = searchingViewModel.textState.value,
                         onValueChange = { text ->
                             searchingViewModel.setText(text)
                         },
                         label = {
                             Text(text = "Search movie..", color = Color.White)
-                        },
-                        colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
-                        textStyle = TextStyle(color = Color.White)
 
-                    )
+                        },
+
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            cursorColor = Color.White
+                        ),
+                        textStyle = TextStyle(color = Color.White),
+
+
+                        )
 
                 },
                 navigationIcon = {
@@ -62,13 +75,13 @@ fun SearchBar(
                         Icon(
                             imageVector = Icons.Sharp.ArrowBack,
                             contentDescription = null,
-                            tint = Color.White
+                            tint = Color.Black
                         )
                     }
                 })
         }
     ) { padding ->
-        Box(modifier = Modifier.padding(paddingValues = padding)) {
+        Box( ) {
             SearchingMovies(
                 movies = searchingViewModel.stateOfListOfSearching.value.movies,
                 getGenres = {
@@ -77,7 +90,8 @@ fun SearchBar(
                     searchingViewModel.getDetailsForMovie(movie.id)
                     navigateToMovie()
 
-                }, viewModel = searchingViewModel)
+                }, viewModel = searchingViewModel
+            )
 
         }
     }
