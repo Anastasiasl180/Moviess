@@ -38,7 +38,7 @@ import com.example.moviess.presentation.ui.whishList.WishListViewModel
 fun Navigation() {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screens.SIGNUP.route) {
+    NavHost(navController = navController, startDestination = Screens.SIGNIN.route) {
 
         composable(Screens.HOME.route) {
             val viewModel = hiltViewModel<MovieViewModel>()
@@ -93,7 +93,9 @@ fun Navigation() {
 
         composable(Screens.LIKED.route) {
             val viewModel = hiltViewModel<WishListViewModel>()
-            WishList(viewModel = viewModel)
+            WishList(viewModel = viewModel, onClickBack = {
+                navController.popBackStack()
+            })
 
         }
         composable(Screens.SIGNUP.route) {
