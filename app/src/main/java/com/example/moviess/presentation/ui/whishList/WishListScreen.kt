@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.elevatedCardColors
 import androidx.compose.material3.Icon
@@ -57,14 +58,16 @@ fun WishList(viewModel: WishListViewModel,onClickBack: () -> Unit) {
         val pagerState = rememberPagerState(pageCount = { details.size })
 
         HorizontalPager(
-            pageSpacing = 10.dp,
+            pageSpacing = 60.dp,
             outOfBoundsPageCount = 2,
             state = pagerState,
             modifier = Modifier.fillMaxSize()
+
         ) { page ->
             WishItem(
                 movie = details[page],
-                viewModel = viewModel, page = page, pagerState = pagerState
+                viewModel = viewModel,
+                page = page, pagerState = pagerState
             )
         }
         IconButton(
@@ -73,7 +76,7 @@ fun WishList(viewModel: WishListViewModel,onClickBack: () -> Unit) {
             },
             modifier = Modifier
                 .padding(top = 20.dp, end = 20.dp)
-                .clickable {  }
+                .clickable { }
         ) {
             Icon(
                 imageVector = Icons.Default.Close,
@@ -89,31 +92,40 @@ fun WishItem(
     pagerState: PagerState,
     page: Int,
     movie: Detail,
-    viewModel: WishListViewModel,
+    viewModel:WishListViewModel,
     modifier: Modifier = Modifier
 ) {
 
+    val pageOffset = ((pagerState.currentPage - page) + pagerState
+        .currentPageOffsetFraction).absoluteValue
+
+    Card(modifier = modifier
+        .padding(horizontal = 20.dp)
+        .fillMaxHeight(0.7f)
+        .fillMaxWidth()
+        .graphicsLayer {
+            val scale = lerp(1f, 1.25f, pageOffset)
+            scaleX *= scale
+            scaleY *= scale
+        }
+        .shadow(16.dp, ambientColor = Color.LightGray),
+        shape = RoundedCornerShape(32.dp),
+        colors = elevatedCardColors(containerColor = Color.White)) {
     Card(
         modifier = modifier
-            .padding(horizontal = 20.dp)
-            .fillMaxHeight(0.7f)
-            .fillMaxWidth()
+            .fillMaxSize()
             .shadow(16.dp, ambientColor = Color.LightGray),
         shape = RoundedCornerShape(32.dp),
         colors = elevatedCardColors(containerColor = Color.White)
     ) {
-
-        val pageOffset = ((pagerState.currentPage - page) + pagerState
-            .currentPageOffsetFraction).absoluteValue
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
+        Box(modifier= Modifier.fillMaxHeight(),
             contentAlignment = Alignment.Center
         ) {
 
             AsyncImage(
                 model = Constants.BASE_IMAGE + movie.posterPath, contentDescription = "Image",
                 modifier = Modifier
+                    .padding(bottom = 30.dp)
                     .align(Alignment.Center)
                     .fillMaxHeight(0.55f)
                     .fillMaxWidth(0.8f)
@@ -126,14 +138,20 @@ fun WishItem(
             )
             Text(
                 text = movie.title,
-                modifier = Modifier.padding(bottom = 420.dp),
+                modifier = Modifier.padding(bottom = 460.dp),
                 color = Color.Black,
                 fontSize = 25.sp,
                 style = MaterialTheme.typography.headlineSmall
             )
 
-                Box(modifier = Modifier.fillMaxWidth(), Alignment.Center) {
-                    Column(modifier = Modifier.padding(top = 420.dp)) {
+            Box(modifier = Modifier.fillMaxWidth(), Alignment.Center) {
+                IconButton(
+                    onClick = { viewModel.deleteMovie(movie.id) },
+                    modifier = Modifier.padding(top =520.dp, start = 270.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "")
+                }
+                Column(modifier = Modifier.padding(top = 390.dp)) {
                     Text(
                         text = movie.releaseDate.split("-")[0],
                         color = Color.Black
@@ -158,6 +176,7 @@ fun WishItem(
         }
 
     }
+}
 }
 /*   IconButton(
        onClick = { viewModel.deleteMovie(movie.id) },

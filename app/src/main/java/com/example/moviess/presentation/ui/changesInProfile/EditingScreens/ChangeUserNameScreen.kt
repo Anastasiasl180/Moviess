@@ -7,17 +7,26 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.Close
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -30,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -56,6 +66,9 @@ fun ChangingUserName(viewModel: SignInViewModel) {
             viewModel.globalState.bitmapImage.value
         )
     }
+    val showDialog = remember {
+        mutableStateOf(false)
+    }
     val context = LocalContext.current
     val imageCropLauncher = rememberLauncherForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful && result.uriContent != null) {
@@ -66,13 +79,24 @@ fun ChangingUserName(viewModel: SignInViewModel) {
     }
 
 
-    Box() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFECECEC))
+    ) {
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(
+                imageVector = Icons.Sharp.Close, contentDescription = "",
+                modifier = Modifier.padding(start = 10.dp, top = 10.dp)
+            )
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 100.dp)
         )
         {
+
             if (oldImage != null) {
                 Image(
                     bitmap = oldImage!!.asImageBitmap(),
@@ -107,8 +131,8 @@ fun ChangingUserName(viewModel: SignInViewModel) {
                     .padding(start = 90.dp)
                     .offset(y = -35.dp)
                     .clip(CircleShape)
-                    .background(Color.Blue)
-                    .size(50.dp)
+                    .background(Color.Black)
+                    .size(40.dp)
                     .padding(10.dp)
                     .clickable {
                         val cropOption = CropImageContractOptions(
@@ -121,43 +145,113 @@ fun ChangingUserName(viewModel: SignInViewModel) {
 
 
             )
-            Card {
-                Text(text = viewModel.globalState.username.value)
-            }
-
-            TextField(value = oldUserName,
-                onValueChange = {
-                    oldUserName = it
-                },
+            Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 160.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.Transparent,
-                    cursorColor = Color.Black,
-                    disabledLabelColor = Color.Black,
-                    focusedPlaceholderColor = Color.Black
-                ), shape = RoundedCornerShape(10.dp), singleLine = true, placeholder = {
-                    Text(text = "New username")
-                })
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TextButton(
-                onClick = {
-                    val newPerson =
-                        viewModel.globalState.getNewPersonMapForMoviesId(
-                            oldUserName,
-                            oldImage?.let { viewModel.globalState.bitMapToString(it) }
-                        )
-                    viewModel.globalState.updatePerson(newPerson)
-                }
+                    .padding(top = 80.dp)
+                    .shadow(16.dp, ambientColor = Color.LightGray)
+                    .height(250.dp)
+                    .width(350.dp),
+                shape = RoundedCornerShape(15.dp),
+                colors = CardDefaults.elevatedCardColors(containerColor = Color.White)
             ) {
-                Text(text = "Change")
+
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    Alignment.Center
+                ) {
+
+                    Row(modifier = Modifier.padding(top = 30.dp)) {
+                        Text(text = "Change your name from ${viewModel.globalState.username.value} to")
+
+                    }
+                }
+
+                TextField(value = oldUserName,
+                    onValueChange = {
+                        oldUserName = it
+                    },
+                    modifier = Modifier
+                        .padding(start = 10.dp, top = 30.dp)
+                        .width(250.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.Transparent,
+                        cursorColor = Color.Black,
+                        disabledLabelColor = Color.Black,
+                        focusedPlaceholderColor = Color.Black
+                    ), singleLine = true, placeholder = {
+                        Text(text = "New username")
+                    })
+                TextButton(modifier = Modifier.padding(top = 50.dp, start = 260.dp),
+                    shape = RoundedCornerShape(20),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                    onClick = {
+                        showDialog.value = true
+                    }
+                ) {
+                    Text(text = "Change")
+
+                }
+                if (showDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = {
+                            showDialog.value = false
+                        },
+                        title = {
+                            Text(text = "Save changes?")
+                        },
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    val newPerson =
+                                        viewModel.globalState.getNewPersonMapForMoviesId(
+                                            oldUserName,
+                                            oldImage?.let { viewModel.globalState.bitMapToString(it) }
+                                        )
+                                    viewModel.globalState.updatePerson(newPerson)
+                                },
+                                modifier = Modifier.padding(top = 60.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                            ) {
+                                Text(text = "Yes")
+                            }
+
+                        },
+                        dismissButton = {
+                            Button(
+                                onClick = {
+                                    showDialog.value = false
+                                },
+                                modifier = Modifier.padding(top = 60.dp, end = 20.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                            ) {
+                                Text("Cancel")
+                            }
+                        },
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.size(300.dp, 200.dp)
+                    )
+                }
+                /*  TextButton(modifier = Modifier.padding(top = 50.dp, start = 260.dp),
+                      onClick = {
+                          val newPerson =
+                              viewModel.globalState.getNewPersonMapForMoviesId(
+                                  oldUserName,
+                                  oldImage?.let { viewModel.globalState.bitMapToString(it) }
+                              )
+                          viewModel.globalState.updatePerson(newPerson)
+                      }
+                  ) {
+                      Text(text = "Change")
+
+                  }*/
 
             }
 
 
         }
+
+
     }
 }
