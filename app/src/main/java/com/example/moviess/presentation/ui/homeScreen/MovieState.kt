@@ -6,7 +6,7 @@ data class MovieState(
     val isLoading: Boolean = false,
     val error:String = "",
     val movies:List<Movie> = emptyList(),
-    val page:Int = 0,
+    var page:Int = 0,
     val totalPage:Int = 0
 
 

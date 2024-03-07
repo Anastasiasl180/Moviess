@@ -9,6 +9,7 @@ import com.example.moviess.data.remote.dto.Genre
 import com.example.moviess.data.remote.dto.Movie
 import com.example.moviess.domain.use_case.HomePageUseCase.GetMovieUseCase
 import com.example.moviess.di.GlobalMovieDetails
+import com.example.moviess.presentation.ui.Genres.GenresViewModel
 import com.example.moviess.presentation.ui.homeScreen.MovieState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -89,6 +90,7 @@ class SearchingViewModel @Inject constructor(
     fun getDetailsForMovie(id:Int){
 globalState.setMovieDetails(id)
     }
+
 
 
     fun fun1(name:Int){

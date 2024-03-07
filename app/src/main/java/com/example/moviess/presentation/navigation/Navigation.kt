@@ -38,7 +38,7 @@ import com.example.moviess.presentation.ui.whishList.WishListViewModel
 fun Navigation() {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screens.CHANGEDPASSWORD.route) {
+    NavHost(navController = navController, startDestination = Screens.SIGNUP.route) {
 
         composable(Screens.HOME.route) {
             val viewModel = hiltViewModel<MovieViewModel>()
@@ -114,7 +114,9 @@ fun Navigation() {
         }
         composable(Screens.RESETINGPASSWORD.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
-           ResetScreen(viewModel)
+           ResetScreen(viewModel, backToSignIn = {
+               navController.navigate(Screens.SIGNIN.route)
+           })
         }
         composable(Screens.AVATAR.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
@@ -126,8 +128,8 @@ fun Navigation() {
         composable(Screens.PROFILE.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
             Scaffold {
-                ScreenOfProfile(viewModel = viewModel, navigateToSignUp = {
-                    navController.navigate(Screens.SIGNUP.route)
+                ScreenOfProfile(viewModel = viewModel, onClickBack = {
+                    navController.popBackStack()
                 }, navigateToChangePassword = {
                     navController.navigate(Screens.CHANGEDPASSWORD.route)
                 }, navigateToChangeUserName = {
@@ -138,11 +140,15 @@ fun Navigation() {
         }
         composable(Screens.CHANGEDPASSWORD.route){
             val viewModel = hiltViewModel<SignInViewModel>()
-            ChangePassword(viewModel)
+            ChangePassword(viewModel, onClickBack = {
+                navController.popBackStack()
+            })
         }
         composable(Screens.CHANGEUSERNAME.route){
             val viewModel = hiltViewModel<SignInViewModel>()
-            ChangingUserName(viewModel = viewModel)
+            ChangingUserName(viewModel = viewModel, onClickBack = {
+                navController.popBackStack()
+            })
         }
 
 

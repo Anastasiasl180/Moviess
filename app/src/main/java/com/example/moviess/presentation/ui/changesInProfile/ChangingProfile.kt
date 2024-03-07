@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.Close
 import androidx.compose.material.icons.sharp.Email
 import androidx.compose.material.icons.sharp.KeyboardArrowRight
 import androidx.compose.material.icons.sharp.LocationOn
@@ -75,7 +76,7 @@ fun Scaffold(content: @Composable () -> Unit) {
 @Composable
 fun ScreenOfProfile(
     viewModel: SignInViewModel,
-    navigateToSignUp: () -> Unit,
+    onClickBack: () -> Unit,
     navigateToChangePassword: () -> Unit,
     navigateToChangeUserName: () -> Unit
 ) {
@@ -102,7 +103,10 @@ fun ScreenOfProfile(
                 .fillMaxSize(0.37f)
                 .background(color = Color.Gray)
         ) {
+IconButton(onClick = { onClickBack() }) {
+    Icon(imageVector = Icons.Sharp.Close, contentDescription = "")
 
+}
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
@@ -171,7 +175,7 @@ fun ScreenOfProfile(
                                     .padding(start = 10.dp),
                                 color = Color.Black
                             )
-                            IconButton(onClick = { navigateToChangeUserName() }) {
+                            IconButton(onClick = { }) {
 
                                 Icon(
                                     imageVector = Icons.Sharp.KeyboardArrowRight,
@@ -203,7 +207,7 @@ fun ScreenOfProfile(
                                             .padding(start = 10.dp),
                                         color = Color.Black
                                     )
-                                    IconButton(onClick = { navigateToChangeUserName() }) {
+                                    IconButton(onClick = { }) {
 
                                         Icon(
                                             imageVector = Icons.Sharp.KeyboardArrowRight,
@@ -334,7 +338,7 @@ fun ScreenOfProfile(
                                     .padding(start = 10.dp),
                                 color = Color.Black
                             )
-                            IconButton(onClick = { navigateToChangePassword() }) {
+                            IconButton(onClick = {  }) {
 
                                 Icon(
                                     imageVector = Icons.Sharp.KeyboardArrowRight,
@@ -369,7 +373,7 @@ fun ScreenOfProfile(
                                     .padding(start = 10.dp),
                                 color = Color.Black
                             )
-                            IconButton(onClick = { navigateToChangePassword() }) {
+                            IconButton(onClick = { }) {
 
                                 Icon(
                                     imageVector = Icons.Sharp.KeyboardArrowRight,

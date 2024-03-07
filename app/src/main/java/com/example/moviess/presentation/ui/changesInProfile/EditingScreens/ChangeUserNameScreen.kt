@@ -56,7 +56,7 @@ import com.example.moviess.presentation.ui.login_screen.SignInViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChangingUserName(viewModel: SignInViewModel) {
+fun ChangingUserName(viewModel: SignInViewModel,onClickBack: () -> Unit) {
 
     var oldUserName by remember {
         mutableStateOf(viewModel.globalState.username.value)
@@ -84,7 +84,7 @@ fun ChangingUserName(viewModel: SignInViewModel) {
             .fillMaxSize()
             .background(Color(0xFFECECEC))
     ) {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { onClickBack() }) {
             Icon(
                 imageVector = Icons.Sharp.Close, contentDescription = "",
                 modifier = Modifier.padding(start = 10.dp, top = 10.dp)
@@ -210,6 +210,7 @@ fun ChangingUserName(viewModel: SignInViewModel) {
                                             oldImage?.let { viewModel.globalState.bitMapToString(it) }
                                         )
                                     viewModel.globalState.updatePerson(newPerson)
+                                    showDialog.value = true
                                 },
                                 modifier = Modifier.padding(top = 60.dp),
                                 colors = ButtonDefaults.buttonColors(containerColor = Color.Black)

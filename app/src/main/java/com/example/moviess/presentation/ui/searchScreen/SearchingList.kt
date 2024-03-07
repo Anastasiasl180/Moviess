@@ -104,10 +104,16 @@ fun SearchingMovies(
                             modifier = Modifier
                                 .shadow(20.dp)
                                 .size(45.dp),
-                                    elevation = ButtonDefaults.buttonElevation( // For elevation
-                                    defaultElevation = 30.dp,
+                            elevation = ButtonDefaults.buttonElevation(
+                                // For elevation
+                                defaultElevation = 30.dp,
 
-                        )
+                                ),
+                            /* colors = ButtonDefaults.buttonColors(
+                                                            containerColor =
+                                                            if ( viewModel.genresViewModel.moviesByGenre?.page == it + 1) Color.DarkGray else Color.LightGray
+
+                                                        )*/
 
 
                         ) {
