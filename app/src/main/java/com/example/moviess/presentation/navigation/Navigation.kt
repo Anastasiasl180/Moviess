@@ -144,6 +144,13 @@ fun Navigation() {
                     navController.navigate(Screens.CHANGEDPASSWORD.route)
                 }, navigateToChangeUserName = {
                     navController.navigate(Screens.CHANGEUSERNAME.route)
+                }, navigateToSignUp = {
+                    navController.navigate(Screens.SIGNUP.route){
+                        popUpTo(Screens.HOME.route){
+                            inclusive = true
+                        }
+                    }
+
                 })
             }
 

@@ -15,9 +15,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Close
+import androidx.compose.material.icons.sharp.Delete
 import androidx.compose.material.icons.sharp.Email
 import androidx.compose.material.icons.sharp.KeyboardArrowRight
 import androidx.compose.material.icons.sharp.LocationOn
@@ -75,7 +77,8 @@ fun ScreenOfProfile(
     viewModel: SignInViewModel,
     onClickBack: () -> Unit,
     navigateToChangePassword: () -> Unit,
-    navigateToChangeUserName: () -> Unit
+    navigateToChangeUserName: () -> Unit,
+    navigateToSignUp: () -> Unit
 ) {
 
     val oldImage by remember {
@@ -95,10 +98,16 @@ fun ScreenOfProfile(
                 .fillMaxSize(0.37f)
                 .background(color = Color.Gray)
         ) {
-IconButton(onClick = { onClickBack() }) {
-    Icon(imageVector = Icons.Sharp.Close, contentDescription = "")
+            IconButton(onClick = { onClickBack() }) {
+                Icon(imageVector = Icons.Sharp.Close, contentDescription = "")
 
-}
+            }
+            IconButton(onClick = {
+                viewModel.globalState.deletePerson()
+                navigateToSignUp()
+            }) {
+                Icon(imageVector = Icons.Sharp.Delete, contentDescription = "")
+            }
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
@@ -106,6 +115,7 @@ IconButton(onClick = { onClickBack() }) {
                 .padding(top = 50.dp)
         )
         {
+
             if (oldImage != null) {
                 Image(
                     bitmap = oldImage!!.asImageBitmap(),
@@ -133,11 +143,20 @@ IconButton(onClick = { onClickBack() }) {
                 )
 
             }
+
+
             Text(
                 text = "Anastasia" /*viewModel.globalState.username.value*/,
                 modifier = Modifier.padding(top = 20.dp),
                 style = MaterialTheme.typography.headlineSmall
             )
+            IconButton(onClick = {
+                viewModel.globalState.deletePerson()
+                navigateToSignUp()
+            }) {
+                Icon(imageVector = Icons.Sharp.Delete, contentDescription = "")
+            }
+
             ElevatedCard(
                 modifier = Modifier
                     .padding(top = 80.dp)
@@ -330,7 +349,7 @@ IconButton(onClick = { onClickBack() }) {
                                     .padding(start = 10.dp),
                                 color = Color.Black
                             )
-                            IconButton(onClick = {  }) {
+                            IconButton(onClick = { }) {
 
                                 Icon(
                                     imageVector = Icons.Sharp.KeyboardArrowRight,
