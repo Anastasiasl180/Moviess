@@ -1,4 +1,4 @@
-package com.example.moviess.presentation.ui.Poster
+package com.example.moviess.presentation.ui.poster_screen
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -30,7 +30,6 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.sharp.FavoriteBorder
 import androidx.compose.material.icons.sharp.Share
 import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,8 +56,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.LifecycleOwner
 import coil.compose.AsyncImage
 import com.example.moviess.common.Constants
-import com.example.moviess.data.remote.dto.Detail
-import com.example.moviess.presentation.ui.searchScreen.searchBarScrollBehaviour
+import com.example.moviess.presentation.ui.search_screen.searchBarScrollBehaviour
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView

@@ -1,4 +1,4 @@
-package com.example.moviess.presentation.ui.changesInProfile.EditingScreens
+package com.example.moviess.presentation.ui.profile_screen.editingScreens
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
@@ -56,7 +56,7 @@ import com.example.moviess.presentation.ui.login_screen.SignInViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChangingUserName(viewModel: SignInViewModel,onClickBack: () -> Unit) {
+fun ChangingUserName(viewModel: SignInViewModel, onClickBack: () -> Unit) {
 
     var oldUserName by remember {
         mutableStateOf(viewModel.globalState.username.value)
@@ -234,19 +234,6 @@ fun ChangingUserName(viewModel: SignInViewModel,onClickBack: () -> Unit) {
                         modifier = Modifier.size(300.dp, 200.dp)
                     )
                 }
-                /*  TextButton(modifier = Modifier.padding(top = 50.dp, start = 260.dp),
-                      onClick = {
-                          val newPerson =
-                              viewModel.globalState.getNewPersonMapForMoviesId(
-                                  oldUserName,
-                                  oldImage?.let { viewModel.globalState.bitMapToString(it) }
-                              )
-                          viewModel.globalState.updatePerson(newPerson)
-                      }
-                  ) {
-                      Text(text = "Change")
-
-                  }*/
 
             }
 

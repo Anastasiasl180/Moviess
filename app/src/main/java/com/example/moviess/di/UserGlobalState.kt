@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
@@ -40,12 +39,14 @@ class UserGlobalState @Inject constructor(
     private val _username: MutableState<String> = mutableStateOf("")
     val username: State<String> = _username
 
+    private val _moviesId: MutableState<List<Int>> = mutableStateOf(emptyList())
+    val moviesId: State<List<Int>> = _moviesId
+
+
     fun setUsername(name: String) {
         _username.value = name
     }
 
-    private val _moviesId: MutableState<List<Int>> = mutableStateOf(emptyList())
-    val moviesId: State<List<Int>> = _moviesId
 
     fun saveUser(callback: () -> Unit) = CoroutineScope(Dispatchers.IO).launch {
         try {
@@ -104,6 +105,7 @@ class UserGlobalState @Inject constructor(
 
         }
     }
+
     fun onFavouriteIconClick(id: Int) {
 
         if (!moviesId.value.contains(id)) {
@@ -115,7 +117,6 @@ class UserGlobalState @Inject constructor(
 
         updatePerson(newPersonMap = getNewPersonMapForMoviesId())
     }
-
 
 
     fun bitMapToString(bitmap: Bitmap): String {
@@ -152,12 +153,12 @@ class UserGlobalState @Inject constructor(
 
     fun updatePerson(newPersonMap: Map<String, Any>) =
         CoroutineScope(Dispatchers.IO).launch {
-            val peronQuerry = personCollectionRef
+            val peronQuery = personCollectionRef
                 .whereEqualTo("uid", auth.uid)
                 .get()
                 .await()
-            if (peronQuerry.documents.isNotEmpty()) {
-                for (document in peronQuerry) {
+            if (peronQuery.documents.isNotEmpty()) {
+                for (document in peronQuery) {
                     try {
                         personCollectionRef.document(document.id)
                             .set(newPersonMap, SetOptions.merge()).await()
@@ -191,7 +192,6 @@ class UserGlobalState @Inject constructor(
                 }
             }
         }
-
 
 
     fun saveImage(image: Uri) {

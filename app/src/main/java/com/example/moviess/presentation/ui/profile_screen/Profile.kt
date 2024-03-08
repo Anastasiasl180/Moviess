@@ -1,4 +1,4 @@
-package com.example.moviess.presentation.ui.changesInProfile
+package com.example.moviess.presentation.ui.profile_screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,7 +25,6 @@ import androidx.compose.material.icons.sharp.Notifications
 import androidx.compose.material.icons.sharp.Person
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -72,7 +70,6 @@ fun Scaffold(content: @Composable () -> Unit) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenOfProfile(
     viewModel: SignInViewModel,
@@ -86,11 +83,6 @@ fun ScreenOfProfile(
             viewModel.globalState.bitmapImage.value
         )
     }
-
-
-    var openDialog by remember { mutableStateOf(false) }
-
-    val context = LocalContext.current
 
     Box(
         modifier = Modifier

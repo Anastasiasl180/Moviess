@@ -1,6 +1,5 @@
-package com.example.moviess.presentation.ui.searchScreen
+package com.example.moviess.presentation.ui.search_screen
 
-import android.util.Log
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.DecayAnimationSpec

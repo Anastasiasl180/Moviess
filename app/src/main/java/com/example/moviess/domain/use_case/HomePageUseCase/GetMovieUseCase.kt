@@ -3,7 +3,6 @@ package com.example.moviess.domain.use_case.HomePageUseCase
 
 import com.example.moviess.common.Resource
 import com.example.moviess.data.remote.dto.Cast
-import com.example.moviess.data.remote.dto.Crew
 import com.example.moviess.data.remote.dto.Detail
 import com.example.moviess.data.remote.dto.GenreMoviesResponse
 import com.example.moviess.data.remote.dto.GenresResponse
@@ -28,9 +27,9 @@ class GetMovieUseCase @Inject constructor(
             val movie = repository.getTopRatedMovies(language, page)
             emit(Resource.Success(movie))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Couldnt reach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 
@@ -40,9 +39,9 @@ class GetMovieUseCase @Inject constructor(
             val movie = repository.getUpComingMovies(language, page)
             emit(Resource.Success(movie))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Couldnt reaach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 
@@ -52,9 +51,9 @@ class GetMovieUseCase @Inject constructor(
             val movie = repository.getPopularMovies(language, page)
             emit(Resource.Success(movie))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected errorr occured"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Coildnt reaach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 
@@ -64,9 +63,9 @@ class GetMovieUseCase @Inject constructor(
             val movie = repository.getSearchMovies(query, page)
             emit(Resource.Success(movie))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected errorr occured"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Coildnt reaach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 
@@ -76,9 +75,9 @@ class GetMovieUseCase @Inject constructor(
             val movie = repository.getGenresMovies(language)
             emit(Resource.Success(movie))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected errorr occured"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Coildnt reaach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 
@@ -88,9 +87,9 @@ class GetMovieUseCase @Inject constructor(
             val detail = repository.getDetailsForPoster(language, id)
             emit(Resource.Success(detail))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected errorr occured"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Coildnt reaach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 
@@ -100,9 +99,9 @@ class GetMovieUseCase @Inject constructor(
             val people = repository.getPeople(id, language)
             emit(Resource.Success(people.cast))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected errorr occured"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Coildnt reaach server. Check your internet connection"))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 
@@ -112,29 +111,29 @@ class GetMovieUseCase @Inject constructor(
             val video = repository.getVideo(id, language)
             emit(Resource.Success(video.results))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected errorr occured"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
             emit(
                 Resource.Error(
-                    e.localizedMessage ?: "Coildnt reaach server. Check your internet connection"
+                    e.localizedMessage ?: "Couldn't reach server. Check your internet connection"
                 )
             )
         }
     }
 
-    fun movieFromGenres(genre: String, language: String, page: Int): Flow<Resource<GenreMoviesResponse>> =
+    fun movieByGenres(genre: String, language: String, page: Int): Flow<Resource<GenreMoviesResponse>> =
         flow {
             try {
                 emit(Resource.Loading())
                 val genres = repository.getMoviesByGenres(genre, language, page)
                 emit(Resource.Success(genres))
             } catch (e: HttpException) {
-                emit(Resource.Error(e.localizedMessage ?: "An unexpected errorr occured"))
+                emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
             } catch (e: IOException) {
                 emit(
                     Resource.Error(
                         e.localizedMessage
-                            ?: "Coildnt reaach server. Check your internet connection"
+                            ?: "Couldn't reach server. Check your internet connection"
                     )
                 )
             }

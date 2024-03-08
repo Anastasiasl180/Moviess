@@ -1,18 +1,13 @@
-package com.example.moviess.presentation.ui.Poster
+package com.example.moviess.presentation.ui.poster_screen
 
 import android.annotation.SuppressLint
-import android.graphics.RectF
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,7 +34,6 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -49,8 +43,6 @@ import coil.compose.AsyncImage
 import com.example.moviess.common.Constants
 import com.example.moviess.data.remote.dto.Detail
 import com.example.moviess.data.remote.dto.Genre
-import com.example.moviess.presentation.ui.searchScreen.searchBarScrollBehaviour
-import com.example.moviess.presentation.ui.theme.color2
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -148,8 +140,10 @@ fun DetailsScreen(movie: Detail?, onClickBack: () -> Unit) {
                             Box() {
 
 
-                                Column(modifier = Modifier
-                                    .padding(bottom = 10.dp)) {
+                                Column(
+                                    modifier = Modifier
+                                        .padding(bottom = 10.dp)
+                                ) {
 
                                     Text(
                                         text = movie.title,
@@ -179,7 +173,6 @@ fun DetailsScreen(movie: Detail?, onClickBack: () -> Unit) {
                                             fontSize = 20.sp,
                                             fontWeight = FontWeight.Bold
                                         )
-                                        //Text(text = roundVoteAverage(movie.voteAverage))
                                         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                                             Text(
                                                 text = movie.voteAverage.roundVoteAverage(),

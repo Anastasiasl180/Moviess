@@ -1,4 +1,4 @@
-package com.example.moviess.presentation.ui.searchScreen
+package com.example.moviess.presentation.ui.search_screen
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -7,9 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviess.common.Resource
 import com.example.moviess.data.remote.dto.Genre
 import com.example.moviess.data.remote.dto.Movie
-import com.example.moviess.domain.use_case.HomePageUseCase.GetMovieUseCase
 import com.example.moviess.di.GlobalMovieDetails
-import com.example.moviess.presentation.ui.Genres.GenresViewModel
+import com.example.moviess.domain.use_case.HomePageUseCase.GetMovieUseCase
 import com.example.moviess.presentation.ui.homeScreen.MovieState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -51,7 +50,7 @@ class SearchingViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _stateOfListOfSearching.value =
-                        MovieState(error = result.message ?: "An unexpected error occured")
+                        MovieState(error = result.message ?: "An unexpected error occurred")
                 }
 
                 is Resource.Loading -> {
@@ -82,21 +81,13 @@ class SearchingViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getGenresForMovie(movie:Movie):List<Genre> =
+    fun getGenresForMovie(movie: Movie): List<Genre> =
         genresForMovies.filter {
             movie.genreIds.contains(it.id)
         }
 
-    fun getDetailsForMovie(id:Int){
-globalState.setMovieDetails(id)
+    fun getDetailsForMovie(id: Int) {
+        globalState.setMovieDetails(id)
     }
 
-
-
-    fun fun1(name:Int){
-
-        val variable = genresForMovies.let {name->
-            name.get(0).id
-        }
-    }
 }

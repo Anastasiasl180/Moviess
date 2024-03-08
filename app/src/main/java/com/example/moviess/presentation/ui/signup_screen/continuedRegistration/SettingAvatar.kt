@@ -32,7 +32,7 @@ import com.example.moviess.presentation.ui.login_screen.SignInViewModel
 
 
 @Composable
-fun SecondPart(
+fun Avatar(
     viewModel: SignInViewModel,
     navigateToHome: () -> Unit
 ) {

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -102,8 +103,9 @@ fun SignUpScreen(
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.Transparent,
                     cursorColor = Color.Black,
-                    disabledLabelColor = Color.Black,
-                    focusedPlaceholderColor = Color.Black
+                    focusedIndicatorColor = Color.Black,
+                    focusedLabelColor = Color.LightGray,
+                    focusedPlaceholderColor = Color.Black,
                 ), shape = RoundedCornerShape(10.dp), singleLine = true, placeholder = {
                     Text(text = "Email")
                 }
@@ -123,6 +125,8 @@ fun SignUpScreen(
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.Transparent,
                     cursorColor = Color.Black,
+                    focusedIndicatorColor = Color.Black,
+                    focusedLabelColor = Color.LightGray,
                     focusedPlaceholderColor = Color.Black,
                 ), shape = RoundedCornerShape(10.dp), singleLine = true, placeholder = {
                     Text(text = "Password")
@@ -140,9 +144,11 @@ fun SignUpScreen(
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.Transparent,
                     cursorColor = Color.Black,
+                    focusedIndicatorColor = Color.Black,
+                    focusedLabelColor = Color.LightGray,
                     focusedPlaceholderColor = Color.Black,
                 ), shape = RoundedCornerShape(10.dp), singleLine = true, placeholder = {
-                    Text(text = "Name")
+                    Text(text = "User name")
 
 
                 })
@@ -157,13 +163,13 @@ fun SignUpScreen(
                             if (email.isEmpty()) {
                                 Toast.makeText(
                                     context,
-                                    "Please enter your email address",
+                                    "Please, enter your email address",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else if (password.isEmpty()) {
                                 Toast.makeText(
                                     context,
-                                    "Please enter your password",
+                                    "Please, enter your password",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else if (!isValidEmail(email)) {
@@ -195,14 +201,14 @@ fun SignUpScreen(
                 Text(text = "SignUp", color = Color.White, modifier = Modifier.padding(7.dp))
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-//                if (state.value?.isLoading == true) {
-//                   // CircularProgressIndicator()
-//
-//                }
+                if (state.value?.isLoading == true) {
+                    CircularProgressIndicator()
+
+                }
             }
             Column(modifier = Modifier.padding(top = 45.dp, end = 130.dp)) {
                 Text(
-                    text = "Already have an account? ", fontWeight = FontWeight.Bold,
+                    text = "Already have an account?", fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
                 Row(modifier = Modifier.padding(top = 10.dp)) {

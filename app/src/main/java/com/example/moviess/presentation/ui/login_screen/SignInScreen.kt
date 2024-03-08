@@ -1,12 +1,7 @@
 package com.example.moviess.presentation.ui.login_screen
 
-import android.app.Activity
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,39 +44,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.moviess.presentation.ui.theme.Pink44
-import com.example.moviess.presentation.ui.theme.Pink46
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignIpScreen(
+fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel(),
     navigateToHome: () -> Unit,
-    navigateToReset:() ->Unit
+    navigateToReset: () -> Unit
 
 
-    ) {
+) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val state = viewModel.signIn.collectAsState(initial = null)
 
-//    LaunchedEffect(key1 = stateSignIn.isError) {
-//        stateSignIn.isError?.let { error ->
-//            Toast.makeText(
-//                context,
-//                error,
-//                Toast.LENGTH_LONG
-//            ).show()
-//        }
-//    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Pink46)
     ) {
         Column(
             modifier = Modifier
@@ -111,7 +94,7 @@ fun SignIpScreen(
                     containerColor = Color.Transparent,
                     cursorColor = Color.Black,
                     disabledLabelColor = Color.Black,
-                   focusedPlaceholderColor = Color.Black
+                    focusedPlaceholderColor = Color.Black
                 ), shape = RoundedCornerShape(10.dp), singleLine = true, placeholder = {
                     Text(text = "Email")
                 }
@@ -151,47 +134,46 @@ fun SignIpScreen(
                 shape = RoundedCornerShape(10.dp)
             )
             {
-                Text(text = "LogIn", color = Color.DarkGray, modifier = Modifier.padding(7.dp))
+                Text(text = "LogIn", color = Color.White, modifier = Modifier.padding(7.dp))
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-//                if (state.value?.isLoading == true) {
-//                    CircularProgressIndicator()
-//
-//                }
+                if (state.value?.isLoading == true) {
+                    CircularProgressIndicator()
+
+                }
             }
 
 
 
-                Spacer(modifier = Modifier.width(20.dp))
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-
-                }
-
-                LaunchedEffect(key1 = state.value?.isSuccess) {
-                    scope.launch {
-                        if (state.value?.isSuccess?.isNotEmpty() == true) {
-                            val success = state.value?.isSuccess
-                            Toast.makeText(context, "${success}", Toast.LENGTH_LONG).show()
-                            Log.wtf("","nnnnnn")
-                        }
-                    }
-                }
-                LaunchedEffect(key1 = state.value?.isError) {
-                    scope.launch {
-                        if (state.value?.isError?.isNotEmpty() == true) {
-                            val error = state.value?.isError
-                            Toast.makeText(context, "${error}", Toast.LENGTH_LONG).show()
-
-                        }
-                    }
-                }
+            Spacer(modifier = Modifier.width(20.dp))
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    tint = Color.White
+                )
 
             }
+
+            LaunchedEffect(key1 = state.value?.isSuccess) {
+                scope.launch {
+                    if (state.value?.isSuccess?.isNotEmpty() == true) {
+                        val success = state.value?.isSuccess
+                        Toast.makeText(context, "${success}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            LaunchedEffect(key1 = state.value?.isError) {
+                scope.launch {
+                    if (state.value?.isError?.isNotEmpty() == true) {
+                        val error = state.value?.isError
+                        Toast.makeText(context, "${error}", Toast.LENGTH_LONG).show()
+
+                    }
+                }
+            }
+
         }
-
     }
+
+}

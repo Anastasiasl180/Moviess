@@ -8,8 +8,6 @@ import com.example.moviess.common.Resource
 import com.example.moviess.data.remote.dto.Detail
 import com.example.moviess.di.UserGlobalState
 import com.example.moviess.domain.use_case.HomePageUseCase.GetMovieUseCase
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -25,7 +23,6 @@ class WishListViewModel @Inject constructor(
 
 
 ) : ViewModel() {
-    private val personCollectionRef = Firebase.firestore.collection("users")
     val details = mutableStateListOf<Detail>()
 
     init {
@@ -58,7 +55,7 @@ class WishListViewModel @Inject constructor(
     fun deleteMovie(id: Int) {
         userGlobalState.onFavouriteIconClick(id)
         details.removeIf { it.id == id }
-        Log.wtf("",userGlobalState.moviesId.value.toString())
+        Log.wtf("", userGlobalState.moviesId.value.toString())
 
     }
 }

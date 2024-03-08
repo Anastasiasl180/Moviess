@@ -1,6 +1,5 @@
 package com.example.moviess.presentation.ui.whishList
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -40,7 +39,7 @@ import com.example.moviess.data.remote.dto.Detail
 import kotlin.math.absoluteValue
 
 @Composable
-fun WishList(viewModel: WishListViewModel,onClickBack: () -> Unit) {
+fun WishList(viewModel: WishListViewModel, onClickBack: () -> Unit) {
     val details = viewModel.details
     Box(
         modifier = Modifier
@@ -92,7 +91,7 @@ fun WishItem(
     pagerState: PagerState,
     page: Int,
     movie: Detail,
-    viewModel:WishListViewModel,
+    viewModel: WishListViewModel,
     modifier: Modifier = Modifier
 ) {
 
@@ -111,79 +110,75 @@ fun WishItem(
         .shadow(16.dp, ambientColor = Color.LightGray),
         shape = RoundedCornerShape(32.dp),
         colors = elevatedCardColors(containerColor = Color.White)) {
-    Card(
-        modifier = modifier
-            .fillMaxSize()
-            .shadow(16.dp, ambientColor = Color.LightGray),
-        shape = RoundedCornerShape(32.dp),
-        colors = elevatedCardColors(containerColor = Color.White)
-    ) {
-        Box(modifier= Modifier.fillMaxHeight(),
-            contentAlignment = Alignment.Center
+        Card(
+            modifier = modifier
+                .fillMaxSize()
+                .shadow(16.dp, ambientColor = Color.LightGray),
+            shape = RoundedCornerShape(32.dp),
+            colors = elevatedCardColors(containerColor = Color.White)
         ) {
+            Box(
+                modifier = Modifier.fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
 
-            AsyncImage(
-                model = Constants.BASE_IMAGE + movie.posterPath, contentDescription = "Image",
-                modifier = Modifier
-                    .padding(bottom = 30.dp)
-                    .align(Alignment.Center)
-                    .fillMaxHeight(0.55f)
-                    .fillMaxWidth(0.8f)
-                    .clip(RoundedCornerShape(16.dp))
-                    .graphicsLayer {
-                        val scale = lerp(1f, 1.75f, pageOffset)
-                        scaleX *= scale
-                        scaleY *= scale
-                    }, contentScale = ContentScale.FillBounds
-            )
-            Text(
-                text = movie.title,
-                modifier = Modifier.padding(bottom = 460.dp),
-                color = Color.Black,
-                fontSize = 25.sp,
-                style = MaterialTheme.typography.headlineSmall
-            )
+                AsyncImage(
+                    model = Constants.BASE_IMAGE + movie.posterPath, contentDescription = "Image",
+                    modifier = Modifier
+                        .padding(bottom = 30.dp)
+                        .align(Alignment.Center)
+                        .fillMaxHeight(0.55f)
+                        .fillMaxWidth(0.8f)
+                        .clip(RoundedCornerShape(16.dp))
+                        .graphicsLayer {
+                            val scale = lerp(1f, 1.75f, pageOffset)
+                            scaleX *= scale
+                            scaleY *= scale
+                        }, contentScale = ContentScale.FillBounds
+                )
+                Text(
+                    text = movie.title,
+                    modifier = Modifier.padding(bottom = 460.dp),
+                    color = Color.Black,
+                    fontSize = 25.sp,
+                    style = MaterialTheme.typography.headlineSmall
+                )
 
-            Box(modifier = Modifier.fillMaxWidth(), Alignment.Center) {
-                IconButton(
-                    onClick = { viewModel.deleteMovie(movie.id) },
-                    modifier = Modifier.padding(top =520.dp, start = 270.dp)
-                ) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = "")
-                }
-                Column(modifier = Modifier.padding(top = 390.dp)) {
-                    Text(
-                        text = movie.releaseDate.split("-")[0],
-                        color = Color.Black
-                    )
-                    if (movie.adult) {
-
-                        Text(
-                            text = "18+",
-                            color = Color.Black,
-                            modifier = Modifier.height(35.dp)
-                        )
-                    } else {
-
-                        Text(text = "Up tp 18", color = Color.Black)
+                Box(modifier = Modifier.fillMaxWidth(), Alignment.Center) {
+                    IconButton(
+                        onClick = { viewModel.deleteMovie(movie.id) },
+                        modifier = Modifier.padding(top = 520.dp, start = 270.dp)
+                    ) {
+                        Icon(imageVector = Icons.Default.Delete, contentDescription = "")
                     }
-                    Text(
-                        movie.genres.joinToString { it.name }, color = Color.Black,
-                    )
+                    Column(modifier = Modifier.padding(top = 390.dp)) {
+                        Text(
+                            text = movie.releaseDate.split("-")[0],
+                            color = Color.Black
+                        )
+                        if (movie.adult) {
 
+                            Text(
+                                text = "18+",
+                                color = Color.Black,
+                                modifier = Modifier.height(35.dp)
+                            )
+                        } else {
+
+                            Text(text = "Up tp 18", color = Color.Black)
+                        }
+                        Text(
+                            movie.genres.joinToString { it.name }, color = Color.Black,
+                        )
+
+                    }
                 }
             }
-        }
 
+        }
     }
 }
-}
-/*   IconButton(
-       onClick = { viewModel.deleteMovie(movie.id) },
-       modifier = Modifier.padding(top = 105.dp, start = 150.dp)
-   ) {
-       Icon(imageVector = Icons.Default.Delete, contentDescription = "")
-   }*/
+
 
 
 

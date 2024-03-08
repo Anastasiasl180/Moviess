@@ -1,4 +1,4 @@
-package com.example.moviess.presentation.ui.Genres
+package com.example.moviess.presentation.ui.moviesByGenres
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -31,7 +31,7 @@ class GenresViewModel @Inject constructor(
     }
 
     fun getMovieByGenres(page: Int) {
-        getMoviesUseCase.movieFromGenres(
+        getMoviesUseCase.movieByGenres(
             globalState.genres.value.toString(),
             Locale.getDefault().language,
             page

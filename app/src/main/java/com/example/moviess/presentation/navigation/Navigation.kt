@@ -1,6 +1,5 @@
 package com.example.moviess.presentation.navigation
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -10,30 +9,28 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.moviess.presentation.ui.Genres.GenreList
-import com.example.moviess.presentation.ui.Genres.GenresViewModel
-import com.example.moviess.presentation.ui.Poster.DetailsViewModel
-import com.example.moviess.presentation.ui.Poster.PagerDetails
-import com.example.moviess.presentation.ui.changesInProfile.EditingScreens.ChangePassword
-import com.example.moviess.presentation.ui.changesInProfile.EditingScreens.ChangingUserName
-import com.example.moviess.presentation.ui.changesInProfile.Scaffold
-import com.example.moviess.presentation.ui.changesInProfile.ScreenOfProfile
+import com.example.moviess.presentation.ui.moviesByGenres.GenreList
+import com.example.moviess.presentation.ui.moviesByGenres.GenresViewModel
+import com.example.moviess.presentation.ui.poster_screen.DetailsViewModel
+import com.example.moviess.presentation.ui.poster_screen.PagerDetails
+import com.example.moviess.presentation.ui.profile_screen.editingScreens.ChangePassword
+import com.example.moviess.presentation.ui.profile_screen.editingScreens.ChangingUserName
+import com.example.moviess.presentation.ui.profile_screen.Scaffold
+import com.example.moviess.presentation.ui.profile_screen.ScreenOfProfile
 import com.example.moviess.presentation.ui.homeScreen.Drawer
 import com.example.moviess.presentation.ui.homeScreen.HomeScreen
 import com.example.moviess.presentation.ui.homeScreen.MainScaffold
 import com.example.moviess.presentation.ui.homeScreen.MovieViewModel
 import com.example.moviess.presentation.ui.login_screen.SignInViewModel
-import com.example.moviess.presentation.ui.login_screen.SignIpScreen
+import com.example.moviess.presentation.ui.login_screen.SignInScreen
 import com.example.moviess.presentation.ui.login_screen.reset.ResetScreen
-import com.example.moviess.presentation.ui.searchScreen.SearchBar
-import com.example.moviess.presentation.ui.searchScreen.SearchingViewModel
+import com.example.moviess.presentation.ui.search_screen.SearchBar
+import com.example.moviess.presentation.ui.search_screen.SearchingViewModel
 import com.example.moviess.presentation.ui.signup_screen.SignUpScreen
-import com.example.moviess.presentation.ui.signup_screen.SignUpViewModel
-import com.example.moviess.presentation.ui.signup_screen.continuedRegistration.SecondPart
+import com.example.moviess.presentation.ui.signup_screen.continuedRegistration.Avatar
 import com.example.moviess.presentation.ui.whishList.WishList
 import com.example.moviess.presentation.ui.whishList.WishListViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation() {
 
@@ -55,7 +52,7 @@ fun Navigation() {
                         viewModel = viewModel,
                         navigateToDetails = { navController.navigate(Screens.DETAILS.route) },
                         navigateToJenre = {
-                            navController.navigate(Screens.JENRES.route)
+                            navController.navigate(Screens.GENRES.route)
 
                         })
                 }
@@ -65,8 +62,9 @@ fun Navigation() {
                 navController.navigate(Screens.LIKED.route)
             })
 
+
         }
-        composable(Screens.JENRES.route) {
+        composable(Screens.GENRES.route) {
             val viewModel = hiltViewModel<GenresViewModel>()
             GenreList(viewModel = viewModel, navigateToPoster = {
                 navController.navigate(Screens.DETAILS.route)
@@ -99,18 +97,26 @@ fun Navigation() {
 
         }
         composable(Screens.SIGNUP.route) {
-            val viewModel = hiltViewModel<SignUpViewModel>()
             SignUpScreen(navigateToSignIn = {
                 navController.navigate(Screens.SIGNIN.route)
             }, navigateToAvatar = {
-                navController.navigate(Screens.AVATAR.route)
-
+                navController.navigate(Screens.AVATAR.route){
+                    popUpTo(Screens.SIGNUP.route){
+                        inclusive = true
+                    }
+                }
             })
         }
         composable(Screens.SIGNIN.route) {
-            SignIpScreen(navigateToHome = {
-                navController.navigate(Screens.HOME.route)
+            SignInScreen(navigateToHome = {
+                navController.navigate(Screens.HOME.route){
+                    popUpTo(Screens.SIGNUP.route){
+                        inclusive = true
+                    }
+                }
+
             }, navigateToReset = {navController.navigate(Screens.RESETINGPASSWORD.route)})
+
         }
         composable(Screens.RESETINGPASSWORD.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
@@ -120,8 +126,12 @@ fun Navigation() {
         }
         composable(Screens.AVATAR.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
-            SecondPart(viewModel = viewModel, navigateToHome = {
-                navController.navigate(Screens.HOME.route)
+            Avatar(viewModel = viewModel, navigateToHome = {
+                navController.navigate(Screens.HOME.route){
+                    popUpTo(Screens.AVATAR.route){
+                        inclusive = true
+                    }
+                }
             })
         }
 

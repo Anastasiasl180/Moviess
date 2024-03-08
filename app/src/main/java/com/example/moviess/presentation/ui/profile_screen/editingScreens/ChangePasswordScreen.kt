@@ -1,4 +1,4 @@
-package com.example.moviess.presentation.ui.changesInProfile.EditingScreens
+package com.example.moviess.presentation.ui.profile_screen.editingScreens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -17,7 +17,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,7 +41,7 @@ import com.example.moviess.presentation.ui.login_screen.SignInViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChangePassword(viewModel: SignInViewModel,onClickBack:() -> Unit) {
+fun ChangePassword(viewModel: SignInViewModel, onClickBack: () -> Unit) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var newPassword by rememberSaveable {
@@ -61,7 +60,7 @@ fun ChangePassword(viewModel: SignInViewModel,onClickBack:() -> Unit) {
             .background(Color(0xFFECECEC))
     ) {
 
-        IconButton(onClick = {onClickBack() }) {
+        IconButton(onClick = { onClickBack() }) {
 
             Icon(
                 imageVector = Icons.Sharp.Close, contentDescription = "",
@@ -69,9 +68,6 @@ fun ChangePassword(viewModel: SignInViewModel,onClickBack:() -> Unit) {
             )
 
         }
-        /*  Box(modifier = Modifier.fillMaxWidth(0.9f).padding(top = 70.dp, start = 50.dp)) {
-              Text(text = "To change your password, enter the email you entered during registration, and your old password ")
-          }*/
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -182,7 +178,7 @@ fun ChangePassword(viewModel: SignInViewModel,onClickBack:() -> Unit) {
                 })
             }
             TextButton(
-                onClick = { showDialog.value = true},
+                onClick = { showDialog.value = true },
                 modifier = Modifier.padding(top = 40.dp),
                 shape = RoundedCornerShape(20),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Black)

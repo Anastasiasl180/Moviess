@@ -1,4 +1,4 @@
-package com.example.moviess.presentation.ui.searchScreen
+package com.example.moviess.presentation.ui.search_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -81,7 +81,7 @@ fun SearchBar(
                 })
         }
     ) { padding ->
-        Box( ) {
+        Box() {
             SearchingMovies(
                 movies = searchingViewModel.stateOfListOfSearching.value.movies,
                 getGenres = {
