@@ -1,4 +1,4 @@
-package com.example.moviess.presentation.ui.signup_screen.continuedRegistration
+package com.example.moviess.presentation.ui.signup_screen.settingAvatar
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
@@ -75,7 +75,7 @@ fun Avatar(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .clip(CircleShape)
-                        .background(Color.Magenta)
+                        .background(Color.Black)
                         .size(150.dp)
 
                 )

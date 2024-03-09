@@ -1,5 +1,8 @@
 package com.example.moviess.presentation.ui.signup_screen
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviess.common.Resource
@@ -21,9 +24,14 @@ class SignUpViewModel @Inject constructor(
     private val _signUp = Channel<SignInState>()
     val signUp = _signUp.receiveAsFlow()
 
-    val name get() = globalState.username
-    fun setUserName(name: String) {
-        globalState.setUsername(name)
+    fun setUserName() {
+        globalState.setUsername(name1.value)
+    }
+    val _nameOfUser: MutableState<String> = mutableStateOf("")
+    val name1: State<String> = _nameOfUser
+
+    fun setNameOfUser(name: String) {
+        _nameOfUser.value = name
     }
 
     fun registerInUser(email: String, password: String) = viewModelScope.launch {

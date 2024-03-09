@@ -136,8 +136,8 @@ fun SignUpScreen(
             if (!isValid2) {
                 Text(text = "Please enter 8 or more characters", color = Color.Red)
             }
-            TextField(value = viewModel.name.value, onValueChange = {
-                viewModel.setUserName(it)
+            TextField(value = viewModel.name1.value, onValueChange = {
+                viewModel.setNameOfUser(it)
             }, modifier = Modifier
                 .padding(top = 20.dp)
                 .fillMaxWidth(),
@@ -184,7 +184,7 @@ fun SignUpScreen(
 
                     }
 
-
+                    viewModel.setUserName()
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.9f)

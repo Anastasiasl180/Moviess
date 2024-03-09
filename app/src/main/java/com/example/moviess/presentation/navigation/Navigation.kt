@@ -27,7 +27,7 @@ import com.example.moviess.presentation.ui.login_screen.reset.ResetScreen
 import com.example.moviess.presentation.ui.search_screen.SearchBar
 import com.example.moviess.presentation.ui.search_screen.SearchingViewModel
 import com.example.moviess.presentation.ui.signup_screen.SignUpScreen
-import com.example.moviess.presentation.ui.signup_screen.continuedRegistration.Avatar
+import com.example.moviess.presentation.ui.signup_screen.settingAvatar.Avatar
 import com.example.moviess.presentation.ui.whishList.WishList
 import com.example.moviess.presentation.ui.whishList.WishListViewModel
 

@@ -158,11 +158,19 @@ fun ChangePassword(viewModel: SignInViewModel, onClickBack: () -> Unit) {
                 AlertDialog(onDismissRequest = { showDialog.value = false }, title = {
                     Text(text = "Save changes?")
                 }, confirmButton = {
-                    viewModel.verifyAndChangePassword(
-                        email,
-                        password,
-                        newPassword
-                    )
+                    Button(
+                        onClick = {
+                            viewModel.verifyAndChangePassword(
+                                email,
+                                password,
+                                newPassword
+                            )
+                        }, modifier = Modifier.padding(top = 60.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                    ) {
+                        Text(text = "Yes")
+                    }
+
                     showDialog.value = true
                 }, modifier = Modifier, dismissButton = {
                     Button(

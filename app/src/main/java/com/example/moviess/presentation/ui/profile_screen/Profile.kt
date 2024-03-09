@@ -15,16 +15,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Divider
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Close
-import androidx.compose.material.icons.sharp.Delete
 import androidx.compose.material.icons.sharp.Email
 import androidx.compose.material.icons.sharp.KeyboardArrowRight
 import androidx.compose.material.icons.sharp.LocationOn
 import androidx.compose.material.icons.sharp.Notifications
 import androidx.compose.material.icons.sharp.Person
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -35,7 +37,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +44,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.moviess.R
@@ -86,6 +86,10 @@ fun ScreenOfProfile(
             viewModel.globalState.bitmapImage.value
         )
     }
+    val showDialog = remember {
+        mutableStateOf(false)
+    }
+
 
     Box(
         modifier = Modifier
@@ -98,15 +102,10 @@ fun ScreenOfProfile(
                 .fillMaxSize(0.37f)
                 .background(color = Color.Gray)
         ) {
+
             IconButton(onClick = { onClickBack() }) {
                 Icon(imageVector = Icons.Sharp.Close, contentDescription = "")
 
-            }
-            IconButton(onClick = {
-                viewModel.globalState.deletePerson()
-                navigateToSignUp()
-            }) {
-                Icon(imageVector = Icons.Sharp.Delete, contentDescription = "")
             }
         }
         Column(
@@ -115,46 +114,81 @@ fun ScreenOfProfile(
                 .padding(top = 50.dp)
         )
         {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-            if (oldImage != null) {
-                Image(
-                    bitmap = oldImage!!.asImageBitmap(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(100.dp)
-                        .border(
-                            width = 1.dp,
-                            color = Color.White,
-                            shape = CircleShape
-                        )
+
+                if (oldImage != null) {
+                    Image(
+                        bitmap = oldImage!!.asImageBitmap(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(100.dp)
+                            .border(
+                                width = 1.dp,
+                                color = Color.White,
+                                shape = CircleShape
+                            )
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_person_24),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(Color.Black)
+                            .size(100.dp)
+
+                    )
+
+                }
+
+
+                Text(
+                    text = "Anastasia" /*viewModel.globalState.username.value*/,
+                    modifier = Modifier.padding(top = 20.dp),
+                    style = MaterialTheme.typography.headlineSmall
                 )
-            } else {
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_person_24),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(Color.Black)
-                        .size(100.dp)
 
-                )
+                if (showDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false }, title = {
+                            Text(text = "Delete account?")
+                        },
 
-            }
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    viewModel.globalState.deletePerson()
+                                    navigateToSignUp()
+                                    showDialog.value = true
+                                }, modifier = Modifier.padding(top = 60.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                            ) {
+                                Text(text = "Yes")
+                            }
 
+                        }, dismissButton = {
+                            Button(
+                                onClick = { showDialog.value = false },
+                                modifier = Modifier.padding(top = 60.dp, end = 20.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                            ) {
+                                Text("Cancel")
+                            }
+                        }
+                    )
 
-            Text(
-                text = "Anastasia" /*viewModel.globalState.username.value*/,
-                modifier = Modifier.padding(top = 20.dp),
-                style = MaterialTheme.typography.headlineSmall
-            )
-            IconButton(onClick = {
-                viewModel.globalState.deletePerson()
-                navigateToSignUp()
-            }) {
-                Icon(imageVector = Icons.Sharp.Delete, contentDescription = "")
+                }
+
+                TextButton(onClick = {
+                    showDialog.value = true
+
+                }) {
+                    Text(text = "Delete account")
+                }
             }
 
             ElevatedCard(
@@ -167,26 +201,32 @@ fun ScreenOfProfile(
                 colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-
-                    Column {
+                    Box(modifier = Modifier.fillMaxWidth()) {
 
 
                         Row(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 20.dp)
+
+                                .padding(start = 20.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(imageVector = Icons.Sharp.Person, contentDescription = "")
+                            Icon(
+                                imageVector = Icons.Sharp.Person,
+                                contentDescription = "",
+                                tint = Color.Gray
+                            )
+
                             Text(
-                                text = "Text",
+                                text = "Text1",
                                 modifier = Modifier
                                     .padding(start = 10.dp),
                                 color = Color.Black
                             )
-                            IconButton(onClick = { }) {
+                            IconButton(onClick = { }, modifier = Modifier.padding(start = 180.dp)) {
 
                                 Icon(
                                     imageVector = Icons.Sharp.KeyboardArrowRight,
@@ -195,48 +235,45 @@ fun ScreenOfProfile(
                                 )
 
                             }
-                        }
-                        Divider(
-                            thickness = 1.dp,
-                            color = Color.LightGray,
-                            modifier = Modifier.padding(start = 20.dp, end = 20.dp)
-                        )
-                        Column(modifier = Modifier.fillMaxSize()) {
 
-                            Column {
-
-
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(start = 20.dp)
-                                ) {
-                                    Icon(imageVector = Icons.Sharp.Person, contentDescription = "")
-                                    Text(
-                                        text = "Text",
-                                        modifier = Modifier
-                                            .padding(start = 10.dp),
-                                        color = Color.Black
-                                    )
-                                    IconButton(onClick = { }) {
-
-                                        Icon(
-                                            imageVector = Icons.Sharp.KeyboardArrowRight,
-                                            contentDescription = null,
-                                            tint = Color.Black
-                                        )
-
-                                    }
-                                }
-
-                                Divider(
-                                    thickness = 1.dp,
-                                    color = Color.LightGray,
-                                    modifier = Modifier.padding(start = 20.dp, end = 20.dp)
-                                )
-                            }
                         }
                     }
+                    Divider(
+                        thickness = 1.dp,
+                        color = Color.LightGray,
+                        modifier = Modifier.padding(start = 20.dp, end = 20.dp)
+                    )
+                    Row(
+                        modifier = Modifier
+
+                            .padding(start = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Sharp.Person,
+                            contentDescription = "",
+                            tint = Color.Gray
+                        )
+
+                        Text(
+                            text = "Text1",
+                            modifier = Modifier
+                                .padding(start = 10.dp),
+                            color = Color.Black
+                        )
+                        IconButton(onClick = { }, modifier = Modifier.padding(start = 180.dp)) {
+
+                            Icon(
+                                imageVector = Icons.Sharp.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = Color.Black
+                            )
+
+                        }
+
+                    }
+
+
                 }
 
             }
@@ -245,7 +282,7 @@ fun ScreenOfProfile(
                 modifier = Modifier
                     .padding(top = 30.dp)
                     .shadow(16.dp, ambientColor = Color.LightGray)
-                    .height(320.dp)
+                    .height(290.dp)
                     .width(350.dp),
                 shape = RoundedCornerShape(15.dp),
                 colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
@@ -253,78 +290,77 @@ fun ScreenOfProfile(
 
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Sharp.Person, contentDescription = "",
-                            tint = Color.Gray
-                        )
+
+                    Box(modifier = Modifier.fillMaxWidth()) {
+
+
                         Row(
-                            modifier = Modifier,
-                            horizontalArrangement = Arrangement.spacedBy(100.dp)
+                            modifier = Modifier
+
+                                .padding(start = 20.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-
+                            Icon(
+                                imageVector = Icons.Sharp.Person,
+                                contentDescription = "",
+                                tint = Color.Gray
+                            )
 
                             Text(
-                                text = "Your username",
+                                text = "Username",
                                 modifier = Modifier
                                     .padding(start = 10.dp),
                                 color = Color.Black
                             )
-                            IconButton(onClick = { navigateToChangeUserName() }) {
-
-                                Icon(
-                                    imageVector = Icons.Sharp.KeyboardArrowRight,
-                                    contentDescription = null,
-                                    tint = Color.Black,
-                                    modifier = Modifier.padding(start = 0.dp)
-                                )
-
-                            }
-                        }
-                    }
-                    Divider(
-                        thickness = 1.dp,
-                        color = Color.LightGray,
-                        modifier = Modifier.padding(start = 20.dp, end = 20.dp)
-                    )
-
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Sharp.Email, contentDescription = "",
-                            tint = Color.Gray
-                        )
-                        Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-
-
-                            Text(
-                                text = "Your email and password",
-                                modifier = Modifier
-                                    .padding(start = 10.dp),
-                                color = Color.Black
-                            )
-                            IconButton(onClick = { navigateToChangePassword() }) {
+                            IconButton(onClick = { navigateToChangeUserName()}, modifier = Modifier.padding(start = 145.dp)) {
 
                                 Icon(
                                     imageVector = Icons.Sharp.KeyboardArrowRight,
                                     contentDescription = null,
                                     tint = Color.Black
                                 )
-                            }
-                        }
 
+                            }
+
+                        }
+                    }
+                    Divider(
+                        thickness = 1.dp,
+                        color = Color.LightGray,
+                        modifier = Modifier.padding(start = 20.dp, end = 20.dp)
+                    )
+
+
+                    Row(
+                        modifier = Modifier
+
+                            .padding(start = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Sharp.Email,
+                            contentDescription = "",
+                            tint = Color.Gray
+                        )
+
+                        Text(
+                            text = "Email and password",
+                            modifier = Modifier
+                                .padding(start = 10.dp),
+                            color = Color.Black
+                        )
+                        IconButton(onClick = { navigateToChangePassword()}, modifier = Modifier.padding(start = 70.dp)) {
+
+                            Icon(
+                                imageVector = Icons.Sharp.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = Color.Black
+                            )
+
+                        }
 
                     }
                     Divider(
@@ -334,31 +370,32 @@ fun ScreenOfProfile(
                     )
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp)
+
+                            .padding(start = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             imageVector = Icons.Sharp.Notifications,
                             contentDescription = "",
                             tint = Color.Gray
                         )
-                        Row(horizontalArrangement = Arrangement.spacedBy(114.dp)) {
-                            Text(
-                                text = "Notifications",
-                                modifier = Modifier
-                                    .padding(start = 10.dp),
-                                color = Color.Black
+
+                        Text(
+                            text = "Notifications",
+                            modifier = Modifier
+                                .padding(start = 10.dp),
+                            color = Color.Black
+                        )
+                        IconButton(onClick = { }, modifier = Modifier.padding(start = 125.dp)) {
+
+                            Icon(
+                                imageVector = Icons.Sharp.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = Color.Black
                             )
-                            IconButton(onClick = { }) {
 
-                                Icon(
-                                    imageVector = Icons.Sharp.KeyboardArrowRight,
-                                    contentDescription = null,
-                                    tint = Color.Black
-                                )
-
-                            }
                         }
+
                     }
                     Divider(
                         thickness = 1.dp,
@@ -369,32 +406,32 @@ fun ScreenOfProfile(
 
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp)
+
+                            .padding(start = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             imageVector = Icons.Sharp.LocationOn,
                             contentDescription = "",
-                            tint = Color.Gray,
+                            tint = Color.Gray
                         )
-                        Row(horizontalArrangement = Arrangement.spacedBy(130.dp)) {
-                            Text(
-                                text = "Language",
-                                modifier = Modifier
-                                    .padding(start = 10.dp),
-                                color = Color.Black
+
+                        Text(
+                            text = "Language",
+                            modifier = Modifier
+                                .padding(start = 10.dp),
+                            color = Color.Black
+                        )
+                        IconButton(onClick = { }, modifier = Modifier.padding(start = 150.dp)) {
+
+                            Icon(
+                                imageVector = Icons.Sharp.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = Color.Black
                             )
-                            IconButton(onClick = { }) {
 
-                                Icon(
-                                    imageVector = Icons.Sharp.KeyboardArrowRight,
-                                    contentDescription = null,
-                                    tint = Color.Black,
-                                    modifier = Modifier.padding(start = 20.dp)
-                                )
-
-                            }
                         }
+
                     }
 
 
@@ -403,16 +440,38 @@ fun ScreenOfProfile(
         }
     }
 }
+/*
+@Composable
+fun Item (field:String,icon:ImageVector) {
 
+    Row(
+        modifier = Modifier
 
-/*  Button(onClick = {
-      viewModel.globalState.deletePerson()
-      navigateToSignUp()
-  }) {
-      Text(text = "Delete")
-  }
+            .padding(start = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = "",
+            tint = Color.Gray
+        )
 
+        Text(
+            text = field,
+            modifier = Modifier
+                .padding(start = 10.dp),
+            color = Color.Black
+        )
+        IconButton(onClick = { }, modifier = Modifier.padding(start = 150.dp)) {
 
-}
+            Icon(
+                imageVector = Icons.Sharp.KeyboardArrowRight,
+                contentDescription = null,
+                tint = Color.Black
+            )
+
+        }
+
+    }
 }*/
 

@@ -39,6 +39,7 @@ class UserGlobalState @Inject constructor(
     private val _username: MutableState<String> = mutableStateOf("")
     val username: State<String> = _username
 
+
     private val _moviesId: MutableState<List<Int>> = mutableStateOf(emptyList())
     val moviesId: State<List<Int>> = _moviesId
 
