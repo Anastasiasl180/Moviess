@@ -147,7 +147,7 @@ fun ScreenOfProfile(
 
 
                 Text(
-                    text = "Anastasia" /*viewModel.globalState.username.value*/,
+                    text = viewModel.globalState.username.value,
                     modifier = Modifier.padding(top = 20.dp),
                     style = MaterialTheme.typography.headlineSmall
                 )

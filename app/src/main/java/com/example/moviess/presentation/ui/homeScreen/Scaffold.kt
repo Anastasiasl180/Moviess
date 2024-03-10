@@ -36,7 +36,6 @@ fun MainScaffold(onClick: (Screens) -> Unit, content: @Composable () -> Unit) {
 
     Scaffold(modifier = Modifier
         .fillMaxSize(),
-        containerColor = Pink44,
         bottomBar = {
             MainBottomBar(onClick = onClick)
         },
@@ -65,8 +64,9 @@ fun MainBottomBar(onClick: (Screens) -> Unit) {
         cornerRadius = shapeCornerRadius(cornerRadius = 34.dp),
         ballAnimation = Parabolic(tween(300)),
         indentAnimation = Height(tween(300)),
+      barColor = Color.Transparent,
 
-        ballColor = Color.White
+        ballColor = Color.Black
     ) {
         navigationBarItems.forEach { item ->
             Box(

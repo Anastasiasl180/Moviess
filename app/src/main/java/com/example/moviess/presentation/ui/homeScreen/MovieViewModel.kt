@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviess.common.Resource
+import com.example.moviess.data.remote.dto.Genre
 import com.example.moviess.di.GlobalMovieDetails
 import com.example.moviess.di.UserGlobalState
 import com.example.moviess.domain.use_case.HomePageUseCase.GetMovieUseCase
@@ -45,9 +46,10 @@ return globalUserState.username
     fun setDetailsForPoster(id: Int) {
         globalState.setMovieDetails(id)
     }
-    fun setGenres(id:Int){
-        globalState.setGenres(id)
+    fun setGenres(genre: Genre){
+        globalState.setGenres(genre)
     }
+
 
 
 

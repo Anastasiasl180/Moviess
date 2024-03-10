@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,7 +38,7 @@ fun MovieList(movies: List<Movie>, tittle: String, onClick: (Movie) -> Unit,) {
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 30.dp, bottom = 5.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Text(text = tittle, color = Color.White)
+        Text(text = tittle, color = Color.Black)
 
         LazyRow(
             modifier = Modifier
@@ -76,7 +78,7 @@ fun MovieListItem(
                     .clip(RoundedCornerShape(10.dp)),
                 contentScale = ContentScale.FillBounds
             )
-            Text(text = movie.title, modifier = Modifier.width(150.dp), color = Color.White)
+            Text(text = movie.title, modifier = Modifier.width(150.dp), color = Color.Black)
         }
 
     }
@@ -91,21 +93,24 @@ fun GenreItem(name: String,onClick: () -> Unit) {
             .padding(8.dp)
             .height(50.dp)
             .width(130.dp),
-        shape = RoundedCornerShape(10.dp)
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+        shape = RoundedCornerShape(10.dp),
+
 
     ) {
-        Text(text = name)
+        Text(text = name, color = Color.White)
     }
 }
 
 @Composable
-fun GenreItems(genres: List<Genre>,onClick:(Int) -> Unit) {
+fun GenreItems(genres: List<Genre>,onClick:(Genre) -> Unit) {
     LazyRow {
         items(genres) { genre ->
 
             GenreItem(name = genre.name,onClick = {
-                onClick(genre.id)
+                onClick(genre)
             })
+
         }
     }
 }

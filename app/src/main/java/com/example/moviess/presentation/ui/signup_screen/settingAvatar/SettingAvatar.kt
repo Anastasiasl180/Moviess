@@ -90,7 +90,7 @@ fun Avatar(
                     .padding(start = 90.dp)
                     .offset(y = -35.dp)
                     .clip(CircleShape)
-                    .background(Color.Blue)
+                    .background(Color.Black)
                     .size(50.dp)
                     .padding(10.dp)
                     .clickable {

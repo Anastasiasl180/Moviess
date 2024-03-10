@@ -68,12 +68,12 @@ fun TextHello(name: String, onImageClick: () -> Unit, bitmap: Bitmap?) {
                 Text(
                     text = "Hello",
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = Color.Black,
                     fontSize = 30.sp
                 )
                 Text(
                     text = name,
-                    color = Color.White,
+                    color = Color.Black,
                     modifier = Modifier.padding(start = 10.dp),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
@@ -82,7 +82,7 @@ fun TextHello(name: String, onImageClick: () -> Unit, bitmap: Bitmap?) {
 
             Text(
                 text = "Choose your movie",
-                color = Color.White,
+                color = Color.Black,
                 fontWeight = FontWeight.W200,
                 modifier = Modifier.padding(top = 20.dp),
                 fontSize = 20.sp

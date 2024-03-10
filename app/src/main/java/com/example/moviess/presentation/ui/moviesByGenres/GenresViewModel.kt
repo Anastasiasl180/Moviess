@@ -32,14 +32,14 @@ class GenresViewModel @Inject constructor(
 
     fun getMovieByGenres(page: Int) {
         getMoviesUseCase.movieByGenres(
-            globalState.genres.value.toString(),
+            globalState.genres.value.id.toString(),
             Locale.getDefault().language,
             page
         ).onEach { result ->
 
             when (result) {
                 is Resource.Error -> {
-                    Log.wtf("fgkggn", result.message)
+
                 }
 
                 is Resource.Loading -> {
@@ -49,6 +49,7 @@ class GenresViewModel @Inject constructor(
                 is Resource.Success -> {
                     result.data?.let {
                         moviesByGenre = it
+
                     }
                 }
             }

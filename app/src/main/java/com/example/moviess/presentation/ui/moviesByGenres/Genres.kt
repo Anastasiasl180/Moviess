@@ -1,5 +1,7 @@
 package com.example.moviess.presentation.ui.moviesByGenres
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,70 +23,116 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.ArrowBack
+import androidx.compose.material.icons.sharp.Close
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.moviess.common.Constants
 import com.example.moviess.data.remote.dto.Movie
-import com.example.moviess.presentation.ui.theme.Pink40
+import com.example.moviess.presentation.ui.search_screen.searchBarScrollBehaviour
+import com.example.moviess.presentation.ui.theme.color1
 import com.example.moviess.presentation.ui.theme.color2
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenreList(
     viewModel: GenresViewModel,
-    navigateToPoster: () -> Unit
+    navigateToPoster: () -> Unit,
+    onClickBack: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth(),
-        contentPadding =
-        PaddingValues(start = 20.dp, end = 20.dp, top = 30.dp, bottom = 10.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp), state = scrollState
-
-
-    ) {
-
-
-        if (viewModel.moviesByGenre != null) {
-            items(viewModel.moviesByGenre!!.results) { movies ->
-                GenresItem(movie = movies, clickToDetails = {
-                    viewModel.globalState.setMovieDetails(it)
-                    navigateToPoster()
-                })
-
-            }
-        }
-        item {
-            Pages(
-                viewModel = viewModel,
-                onClick = {
-                    viewModel.getMovieByGenres(it)
-                    coroutineScope.launch {
-                        scrollState.animateScrollToItem(0)
-                    }
+    val tioAppBarDefaults = searchBarScrollBehaviour()
+    Scaffold(modifier = Modifier.nestedScroll(tioAppBarDefaults.nestedScrollConnection),
+        topBar = {
+            MediumTopAppBar(title = { Text(text = viewModel.globalState.genres.value.name,     maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )},
+                colors = TopAppBarDefaults.smallTopAppBarColors(),
+                scrollBehavior = tioAppBarDefaults,
+                actions = {
 
                 },
-            )
+                navigationIcon = {
+                    IconButton(onClick = { onClickBack() }) {
+                        Icon(
+                            imageVector = Icons.Sharp.ArrowBack,
+                            contentDescription = null,
+                            tint = Color.Black
+                        )
+                    }
+                })
         }
+    ) {padding -> Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentPadding =
+            PaddingValues(start = 20.dp, end = 20.dp, top = 120.dp, bottom = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp), state = scrollState
 
+
+        ) {
+
+            if (viewModel.moviesByGenre != null) {
+                items(viewModel.moviesByGenre!!.results) { movies ->
+
+
+                        GenresItem(movie = movies, clickToDetails = {
+                            viewModel.globalState.setMovieDetails(it)
+                            navigateToPoster()
+                        })
+
+
+
+                }
+            }
+            item {
+                Pages(
+                    viewModel = viewModel,
+                    onClick = {
+                        viewModel.getMovieByGenres(it)
+                        coroutineScope.launch {
+                            scrollState.animateScrollToItem(0)
+                        }
+
+                    },
+                )
+            }
+
+        }
     }
-}
+}}
 
 @Composable
 fun GenresItem(movie: Movie, clickToDetails: (Int) -> Unit) {
@@ -93,7 +141,7 @@ fun GenresItem(movie: Movie, clickToDetails: (Int) -> Unit) {
         modifier = Modifier
             .clickable { clickToDetails(movie.id) }
             .fillMaxWidth()
-            .height(225.dp), colors = CardDefaults.cardColors(containerColor = Pink40)
+            .height(225.dp), colors = CardDefaults.cardColors(containerColor = color1)
 
 
     ) {

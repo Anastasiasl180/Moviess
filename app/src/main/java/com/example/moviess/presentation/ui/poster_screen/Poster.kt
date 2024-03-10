@@ -1,6 +1,7 @@
 package com.example.moviess.presentation.ui.poster_screen
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -77,7 +78,7 @@ fun DetailsScreen(movie: Detail?, onClickBack: () -> Unit) {
             }, containerColor = Color.Black
         ) { padding ->
 
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize(),) {
 
                 Column(
                     modifier = Modifier
@@ -87,7 +88,7 @@ fun DetailsScreen(movie: Detail?, onClickBack: () -> Unit) {
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(bottomEnd = 35.dp, bottomStart = 35.dp))
-                            .fillMaxHeight(0.9f)
+                            .fillMaxHeight(0.9f),
                     ) {
                         AsyncImage(
                             model = Constants.BASE_IMAGE + movie.posterPath,
@@ -137,7 +138,7 @@ fun DetailsScreen(movie: Detail?, onClickBack: () -> Unit) {
                                     )
                             )
 
-                            Box() {
+                            Box(contentAlignment = Alignment.BottomEnd) {
 
 
                                 Column(

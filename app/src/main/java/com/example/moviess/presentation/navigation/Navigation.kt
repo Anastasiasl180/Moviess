@@ -35,7 +35,7 @@ import com.example.moviess.presentation.ui.whishList.WishListViewModel
 fun Navigation() {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screens.SIGNUP.route) {
+    NavHost(navController = navController, startDestination = Screens.HOME.route) {
 
         composable(Screens.HOME.route) {
             val viewModel = hiltViewModel<MovieViewModel>()
@@ -68,7 +68,10 @@ fun Navigation() {
             val viewModel = hiltViewModel<GenresViewModel>()
             GenreList(viewModel = viewModel, navigateToPoster = {
                 navController.navigate(Screens.DETAILS.route)
-            })
+            },
+                onClickBack = {
+                    navController.navigate(Screens.HOME.route)
+                })
         }
         composable(Screens.SEARCH.route) {
             val viewModel = hiltViewModel<SearchingViewModel>()
@@ -82,7 +85,7 @@ fun Navigation() {
         composable(Screens.DETAILS.route) {
             val viewModel = it.sharedViewModel<DetailsViewModel>(navController)
             PagerDetails(viewModel = viewModel, onClickBack = {
-                navController.navigate(Screens.HOME.route)
+                navController.popBackStack()
             })
 
 
@@ -100,8 +103,8 @@ fun Navigation() {
             SignUpScreen(navigateToSignIn = {
                 navController.navigate(Screens.SIGNIN.route)
             }, navigateToAvatar = {
-                navController.navigate(Screens.AVATAR.route){
-                    popUpTo(Screens.SIGNUP.route){
+                navController.navigate(Screens.AVATAR.route) {
+                    popUpTo(Screens.SIGNUP.route) {
                         inclusive = true
                     }
                 }
@@ -109,26 +112,26 @@ fun Navigation() {
         }
         composable(Screens.SIGNIN.route) {
             SignInScreen(navigateToHome = {
-                navController.navigate(Screens.HOME.route){
-                    popUpTo(Screens.SIGNUP.route){
+                navController.navigate(Screens.HOME.route) {
+                    popUpTo(Screens.SIGNUP.route) {
                         inclusive = true
                     }
                 }
 
-            }, navigateToReset = {navController.navigate(Screens.RESETINGPASSWORD.route)})
+            }, navigateToReset = { navController.navigate(Screens.RESETINGPASSWORD.route) })
 
         }
         composable(Screens.RESETINGPASSWORD.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
-           ResetScreen(viewModel, backToSignIn = {
-               navController.navigate(Screens.SIGNIN.route)
-           })
+            ResetScreen(viewModel, backToSignIn = {
+                navController.navigate(Screens.SIGNIN.route)
+            })
         }
         composable(Screens.AVATAR.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
             Avatar(viewModel = viewModel, navigateToHome = {
-                navController.navigate(Screens.HOME.route){
-                    popUpTo(Screens.AVATAR.route){
+                navController.navigate(Screens.HOME.route) {
+                    popUpTo(Screens.AVATAR.route) {
                         inclusive = true
                     }
                 }
@@ -145,8 +148,8 @@ fun Navigation() {
                 }, navigateToChangeUserName = {
                     navController.navigate(Screens.CHANGEUSERNAME.route)
                 }, navigateToSignUp = {
-                    navController.navigate(Screens.SIGNUP.route){
-                        popUpTo(Screens.HOME.route){
+                    navController.navigate(Screens.SIGNUP.route) {
+                        popUpTo(Screens.HOME.route) {
                             inclusive = true
                         }
                     }
@@ -155,13 +158,13 @@ fun Navigation() {
             }
 
         }
-        composable(Screens.CHANGEDPASSWORD.route){
+        composable(Screens.CHANGEDPASSWORD.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
             ChangePassword(viewModel, onClickBack = {
                 navController.popBackStack()
             })
         }
-        composable(Screens.CHANGEUSERNAME.route){
+        composable(Screens.CHANGEUSERNAME.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
             ChangingUserName(viewModel = viewModel, onClickBack = {
                 navController.popBackStack()
