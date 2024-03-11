@@ -78,7 +78,7 @@ fun GenreList(
             MediumTopAppBar(title = { Text(text = viewModel.globalState.genres.value.name,     maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )},
-                colors = TopAppBarDefaults.smallTopAppBarColors(),
+                colors = TopAppBarDefaults.smallTopAppBarColors(Color(0xFFECECEC)),
                 scrollBehavior = tioAppBarDefaults,
                 actions = {
 
@@ -96,7 +96,8 @@ fun GenreList(
     ) {padding -> Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .background(Color(0xFFECECEC)),
             contentPadding =
             PaddingValues(start = 20.dp, end = 20.dp, top = 120.dp, bottom = 10.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp), state = scrollState
@@ -141,7 +142,7 @@ fun GenresItem(movie: Movie, clickToDetails: (Int) -> Unit) {
         modifier = Modifier
             .clickable { clickToDetails(movie.id) }
             .fillMaxWidth()
-            .height(225.dp), colors = CardDefaults.cardColors(containerColor = color1)
+            .height(225.dp), colors = CardDefaults.elevatedCardColors(containerColor = Color.White)
 
 
     ) {
@@ -162,7 +163,7 @@ fun GenresItem(movie: Movie, clickToDetails: (Int) -> Unit) {
                 Text(
                     text = movie.title,
                     modifier = Modifier.padding(top = 10.dp),
-                    color = Color.White
+                    color = Color.Black
                 )
                 LazyVerticalStaggeredGrid(verticalItemSpacing = 20.dp,
                     horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -170,7 +171,7 @@ fun GenresItem(movie: Movie, clickToDetails: (Int) -> Unit) {
                     content = {
                         item {
                             Card(
-                                colors = CardDefaults.cardColors(containerColor = color2),
+                                colors = CardDefaults.cardColors(containerColor = Color.Gray),
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
@@ -186,7 +187,7 @@ fun GenresItem(movie: Movie, clickToDetails: (Int) -> Unit) {
                         }
                         item {
                             Card(
-                                colors = CardDefaults.cardColors(containerColor = color2),
+                                colors = CardDefaults.cardColors(containerColor = Color.Gray),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(end = 15.dp)

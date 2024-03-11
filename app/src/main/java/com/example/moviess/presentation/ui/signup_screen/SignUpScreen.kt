@@ -60,7 +60,7 @@ fun SignUpScreen(
     var isValid by remember { mutableStateOf(false) }
     var isValid2 by remember { mutableStateOf(false) }
     fun isValidEmail(email: String): Boolean {
-        val emailRegex = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex()
+        val emailRegex = "[a-zA-Z0-9._-]+@[g-m-a-i-l]+\\.+[c-o-m]+".toRegex()
         return email.trim().matches(emailRegex)
     }
 
@@ -191,7 +191,7 @@ fun SignUpScreen(
                     .fillMaxHeight(0.44f)
                     .padding(top = 110.dp, start = 30.dp, end = 30.dp),
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.Red, containerColor = Pink44
+                    contentColor = Color.Red, containerColor = Color.Black
 
                 ),
                 shape = RoundedCornerShape(10.dp)

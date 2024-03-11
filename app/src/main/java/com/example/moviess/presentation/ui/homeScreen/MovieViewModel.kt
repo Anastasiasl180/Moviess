@@ -85,7 +85,7 @@ return globalUserState.username
 
                 is Resource.Error -> {
                     _stateOfPopularMovies.value =
-                        MovieState(error = result.message ?: "An unexpected error occured")
+                        MovieState(error = result.message ?: "An unexpected error occurred")
                 }
 
                 is Resource.Loading -> {
@@ -111,7 +111,7 @@ return globalUserState.username
 
                 is Resource.Error -> {
                     _stateOfPopularMovies.value =
-                        MovieState(error = result.message ?: "An unexpected error occured")
+                        MovieState(error = result.message ?: "An unexpected error occurred")
                 }
 
                 is Resource.Loading -> {
@@ -135,7 +135,7 @@ return globalUserState.username
 
                 is Resource.Error -> {
                     _stateOfPopularMovies.value =
-                        MovieState(error = result.message ?: "An unexpected error occured")
+                        MovieState(error = result.message ?: "An unexpected error occurred")
                 }
 
                 is Resource.Loading -> {
@@ -157,7 +157,7 @@ return globalUserState.username
 
                 is Resource.Error -> {
                     _stateOfGenres.value =
-                        GenresState(error = result.message ?: "An unexpected error occured")
+                        GenresState(error = result.message ?: "An unexpected error occurred")
                 }
 
                 is Resource.Loading -> {

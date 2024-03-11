@@ -128,7 +128,7 @@ fun SignInScreen(
                     .fillMaxHeight(0.44f)
                     .padding(top = 110.dp, start = 30.dp, end = 30.dp),
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.Red, containerColor = Pink44
+                    contentColor = Color.Red, containerColor = Color.Black
 
                 ),
                 shape = RoundedCornerShape(10.dp)

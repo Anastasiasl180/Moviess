@@ -1,5 +1,6 @@
 package com.example.moviess.presentation.ui.search_screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,9 +51,10 @@ fun SearchingMovies(
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(Color(0xFFECECEC)),
         contentPadding =
-        PaddingValues(),
+        PaddingValues(top = 60.dp),
         verticalArrangement = Arrangement.Center
     ) {
         if (movies.isEmpty()) {
@@ -133,7 +135,7 @@ fun SearchingItem(movie: Movie, getGenres: (Movie) -> List<Genre>, onClick: () -
             .clickable { onClick() }
             .fillMaxWidth()
             .padding(start = 10.dp, end = 10.dp, top = 15.dp)
-            .height(225.dp), colors = CardDefaults.cardColors(containerColor = color1)
+            .height(225.dp),  colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
 
 
     ) {
@@ -154,7 +156,7 @@ fun SearchingItem(movie: Movie, getGenres: (Movie) -> List<Genre>, onClick: () -
                 Text(
                     text = movie.title,
                     modifier = Modifier.padding(top = 10.dp),
-                    color = Color.White
+                    color = Color.Black
                 )
 
                 getGenres(movie).let {
@@ -179,7 +181,7 @@ fun SearchingItem(movie: Movie, getGenres: (Movie) -> List<Genre>, onClick: () -
                             modifier = Modifier
                                 .padding(top = 10.dp, end = 15.dp)
                                 .fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = color2)
+                            colors = CardDefaults.cardColors(containerColor = Color.Gray)
                         ) {
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
@@ -199,7 +201,7 @@ fun SearchingItem(movie: Movie, getGenres: (Movie) -> List<Genre>, onClick: () -
                     content = {
                         item {
                             Card(
-                                colors = CardDefaults.cardColors(containerColor = color2),
+                                colors = CardDefaults.cardColors(containerColor = Color.Gray),
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
@@ -215,7 +217,7 @@ fun SearchingItem(movie: Movie, getGenres: (Movie) -> List<Genre>, onClick: () -
                         }
                         item {
                             Card(
-                                colors = CardDefaults.cardColors(containerColor = color2),
+                                colors = CardDefaults.cardColors(containerColor = Color.Gray),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(end = 15.dp)

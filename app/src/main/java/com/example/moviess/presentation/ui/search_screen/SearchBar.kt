@@ -39,7 +39,7 @@ fun SearchBar(
     Scaffold(modifier = Modifier.nestedScroll(tioAppBarDefaults.nestedScrollConnection),
         topBar = {
             TopAppBar(title = { },
-                colors = TopAppBarDefaults.smallTopAppBarColors(),
+                colors = TopAppBarDefaults.smallTopAppBarColors(Color(0xFFECECEC)),
                 scrollBehavior = tioAppBarDefaults,
                 actions = {
                     TextField(

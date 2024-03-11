@@ -24,6 +24,7 @@ import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -83,9 +84,9 @@ fun TextHello(name: String, onImageClick: () -> Unit, bitmap: Bitmap?) {
             Text(
                 text = "Choose your movie",
                 color = Color.Black,
-                fontWeight = FontWeight.W200,
+                fontSize = 20.sp,style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.padding(top = 20.dp),
-                fontSize = 20.sp
+
             )
         }
 
