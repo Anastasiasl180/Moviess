@@ -92,23 +92,23 @@ fun SearchingMovies(
                             onClick = {
                                 viewModel.getSearchMovies(
                                     viewModel.textState.value,
-                                    it + 1
+                                    it
                                 )
+                                viewModel.setPage(it+1)
                             },
                             shape = RoundedCornerShape(100),
                             modifier = Modifier
                                 .shadow(20.dp)
                                 .size(45.dp),
                             elevation = ButtonDefaults.buttonElevation(
-                                // For elevation
                                 defaultElevation = 30.dp,
 
                                 ),
-                            /* colors = ButtonDefaults.buttonColors(
-                                                            containerColor =
-                                                            if ( viewModel.genresViewModel.moviesByGenre?.page == it + 1) Color.DarkGray else Color.LightGray
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor =
+                                if (viewModel.currentPage.value == it+1) Color.DarkGray else Color.LightGray
 
-                                                        )*/
+                            )
 
 
                         ) {

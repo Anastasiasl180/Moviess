@@ -1,14 +1,12 @@
 package com.example.moviess.presentation.ui.poster_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -78,164 +76,147 @@ fun DetailsScreen(movie: Detail?, onClickBack: () -> Unit) {
             }, containerColor = Color.Black
         ) { padding ->
 
-            Box(modifier = Modifier.fillMaxSize(),) {
-
-                Column(
+            Box(modifier = Modifier.fillMaxSize()) {
+                Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(bottomEnd = 35.dp, bottomStart = 35.dp))
+                        .fillMaxHeight(0.9f),
                 ) {
+                    AsyncImage(
+                        model = Constants.BASE_IMAGE + movie.posterPath,
+                        contentDescription = "Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(
+                                RoundedCornerShape(
+                                    bottomEnd = 35.dp,
+                                    bottomStart = 35.dp
+                                )
+                            )
+                            .shadow(100.dp)
+                            .blur(300.dp)
+
+
+                    )
+                    AsyncImage(
+                        model = Constants.BASE_IMAGE + movie.posterPath,
+                        contentDescription = "Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxHeight(0.67f)
+                            .graphicsLayer { alpha = 0.99f }
+                            .drawWithContent {
+                                val colors = listOf(
+                                    Color.Black,
+                                    Color.Transparent
+
+                                )
+                                drawContent()
+                                drawRect(
+
+                                    brush = Brush.verticalGradient(colors),
+                                    blendMode = BlendMode.DstIn,
+
+                                    )
+                            }
+                            .clip(
+                                RoundedCornerShape(
+                                    bottomEnd = 35.dp,
+                                    bottomStart = 35.dp
+                                )
+                            )
+                    )
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(bottomEnd = 35.dp, bottomStart = 35.dp))
-                            .fillMaxHeight(0.9f),
+                            .fillMaxSize()
+                            .padding(bottom = 60.dp, start = 10.dp),
+                        contentAlignment = Alignment.BottomStart
                     ) {
-                        AsyncImage(
-                            model = Constants.BASE_IMAGE + movie.posterPath,
-                            contentDescription = "Image",
-                            contentScale = ContentScale.Crop,
+                        Column(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .clip(
-                                    RoundedCornerShape(
-                                        bottomEnd = 35.dp,
-                                        bottomStart = 35.dp
-                                    )
-                                )
-                                .shadow(100.dp)
-                                .blur(300.dp)
+                                .padding(bottom = 10.dp)
+                        ) {
 
-
-                        )
-
-                        Column() {
-                            AsyncImage(
-                                model = Constants.BASE_IMAGE + movie.posterPath,
-                                contentDescription = "Image",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .fillMaxHeight(0.67f)
-                                    .graphicsLayer { alpha = 0.99f }
-                                    .drawWithContent {
-                                        val colors = listOf(
-                                            Color.Black,
-                                            Color.Transparent
-
-                                        )
-                                        drawContent()
-                                        drawRect(
-
-                                            brush = Brush.verticalGradient(colors),
-                                            blendMode = BlendMode.DstIn,
-
-                                            )
-                                    }
-                                    .clip(
-                                        RoundedCornerShape(
-                                            bottomEnd = 35.dp,
-                                            bottomStart = 35.dp
-                                        )
-                                    )
+                            Text(
+                                text = movie.title,
+                                color = Color.White,
+                                fontSize = 50.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(bottom = 10.dp), lineHeight = 50.sp
+                            )
+                            Text(
+                                text = movie.releaseDate,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White
                             )
 
-                            Box(contentAlignment = Alignment.BottomEnd) {
-
-
-                                Column(
-                                    modifier = Modifier
-                                        .padding(bottom = 10.dp)
-                                ) {
-
-                                    Text(
-                                        text = movie.title,
-                                        color = Color.White,
-                                        fontSize = 50.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        modifier = Modifier.padding(bottom = 10.dp)
-                                    )
-                                    Column(
-                                        modifier = Modifier
-                                            .padding(
-                                                top = 10.dp,
-                                                start = 10.dp
-                                            ), verticalArrangement = Arrangement.spacedBy(15.dp)
-                                    ) {
-
-
-                                        Text(
-                                            text = movie.releaseDate,
-                                            fontWeight = FontWeight.Medium,
-                                            color = Color.White
-                                        )
-
-                                        Text(
-                                            text = movie.runtime.convert(),
-                                            color = Color.White,
-                                            fontSize = 20.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                            Text(
-                                                text = movie.voteAverage.roundVoteAverage(),
-                                                color = Color.White, fontWeight = FontWeight.Medium
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "Star rating",
-                                                tint = Color.Yellow,
-                                                modifier = Modifier.size(20.dp)
-                                            )
-                                        }
-
-
-
-                                        Text(
-                                            text = movie.genres.joinToString(",") { it.name },
-                                            fontWeight = FontWeight.Medium,
-                                            color = Color.White
-                                        )
-
-                                    }
-
-
-                                }
+                            Text(
+                                text = movie.runtime.convert(),
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                Text(
+                                    text = movie.voteAverage.roundVoteAverage(),
+                                    color = Color.White, fontWeight = FontWeight.Medium
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.Star,
+                                    contentDescription = "Star rating",
+                                    tint = Color.Yellow,
+                                    modifier = Modifier.size(20.dp)
+                                )
                             }
 
-                        }
-                        Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
-                            Icon(
-                                modifier = Modifier
-                                    .padding(top = 710.dp),
 
-                                imageVector = Icons.Default.KeyboardArrowUp,
-                                contentDescription = null,
-                                tint = Color.White
+
+                            Text(
+                                text = movie.genres.joinToString(",") { it.name },
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White
                             )
 
+
                         }
                     }
-
-                    Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
-
-                        Text(
-                            text = "Watch now!",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.Monospace, color = Color.White
-
-                        )
-
-                    }
                 }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 80.dp), Alignment.Center
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .padding(top = 710.dp),
 
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
 
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 20.dp),
+                    Alignment.BottomCenter
+                ) {
+
+                    Text(
+                        text = "Watch now!",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Monospace, color = Color.White
+
+                    )
+
+                }
             }
-
-
         }
     }
 }
-
 
 /*fun roundVoteAverage(number:Double):String =
 ((number*10).toInt().toDouble()/10).toString()*/

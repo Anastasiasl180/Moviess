@@ -1,11 +1,15 @@
 package com.example.moviess.presentation.ui.search_screen
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviess.common.Resource
 import com.example.moviess.data.remote.dto.Genre
+import com.example.moviess.data.remote.dto.GenreMoviesResponse
 import com.example.moviess.data.remote.dto.Movie
 import com.example.moviess.di.GlobalMovieDetails
 import com.example.moviess.domain.use_case.HomePageUseCase.GetMovieUseCase
@@ -29,12 +33,19 @@ class SearchingViewModel @Inject constructor(
     private val _textState = mutableStateOf("")
     val textState = _textState
 
+    private val _currentPage:MutableState<Int> = mutableStateOf(0)
+    val currentPage:State<Int> = _currentPage
+
+    fun setPage(page:Int){
+        _currentPage.value = page
+
+    }
+
     private var genresForMovies: List<Genre> = emptyList()
 
     init {
         getGenres(Locale.getDefault().language)
     }
-
 
     fun getSearchMovies(query: String, page: Int) {
         getMovieUseCase.searching(query, page).onEach { result ->
