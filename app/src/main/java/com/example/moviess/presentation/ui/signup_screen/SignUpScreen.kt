@@ -1,6 +1,7 @@
 package com.example.moviess.presentation.ui.signup_screen
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -206,12 +207,21 @@ fun SignUpScreen(
 
                 }
             }
-            Column(modifier = Modifier.padding(top = 45.dp, end = 130.dp)) {
+
+            Column(
+                modifier = Modifier.padding(top = 45.dp, end = 130.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Text(
                     text = "Already have an account?", fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
-                Row(modifier = Modifier.padding(top = 10.dp)) {
+
+                Row(
+                    modifier = Modifier
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     Text(
                         text = "Sign in",
                         fontWeight = FontWeight.Bold,
@@ -229,28 +239,28 @@ fun SignUpScreen(
 
                     }
                 }
+            }
 
 
 
 
-                LaunchedEffect(key1 = state.value?.isSuccess) {
-                    scope.launch {
-                        if (state.value?.isSuccess?.isNotEmpty() == true) {
-                            val success = state.value?.isSuccess
-                            Toast.makeText(context, "${success}", Toast.LENGTH_LONG).show()
-                        }
+            LaunchedEffect(key1 = state.value?.isSuccess) {
+                scope.launch {
+                    if (state.value?.isSuccess?.isNotEmpty() == true) {
+                        val success = state.value?.isSuccess
+                        Toast.makeText(context, "${success}", Toast.LENGTH_LONG).show()
                     }
                 }
-                LaunchedEffect(key1 = state.value?.isError) {
-                    scope.launch {
-                        if (state.value?.isError?.isNotEmpty() == true) {
-                            val error = state.value?.isError
-                            Toast.makeText(context, "${error}", Toast.LENGTH_LONG).show()
-                        }
+            }
+            LaunchedEffect(key1 = state.value?.isError) {
+                scope.launch {
+                    if (state.value?.isError?.isNotEmpty() == true) {
+                        val error = state.value?.isError
+                        Toast.makeText(context, "${error}", Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
     }
-
 }
+
