@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.translationMatrix
 import coil.compose.AsyncImage
 import com.example.moviess.common.Constants
 import com.example.moviess.data.remote.dto.Detail

@@ -59,7 +59,7 @@ fun WishList(viewModel: WishListViewModel, onClickBack: () -> Unit) {
 
         HorizontalPager(
             pageSpacing = 60.dp,
-            outOfBoundsPageCount = 2,
+           // outOfBoundsPageCount = 2,
             state = pagerState,
             modifier = Modifier.fillMaxSize()
 

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.sharp.KeyboardArrowRight
 import androidx.compose.material.icons.sharp.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -229,7 +230,7 @@ fun SignUpScreen(
                     )
                     IconButton(onClick = { navigateToSignIn() }) {
                         Icon(
-                            imageVector = Icons.Sharp.KeyboardArrowRight,
+                            imageVector = Icons.AutoMirrored.Sharp.KeyboardArrowRight,
                             contentDescription = null,
                             tint = Color.Black,
                             modifier = Modifier
